@@ -1,85 +1,78 @@
 import React from 'react';
-import { StyleSheet, Dimensions, ScrollView,View,Button } from 'react-native';
-import { Block, theme } from 'galio-framework';
-import { Header,Icon } from 'react-native-elements'
-import { Card } from 'galio-framework';
-const { width } = Dimensions.get('screen');
+import { ScrollView } from 'react-native';
+import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar,Button, Image,TouchableOpacity } from 'react-native';
+import { Icon,Header } from 'react-native-elements'
+import * as RootNavigation from '../App.js';
+import Label from "../assets/Label-256.png"
 
-class Home extends React.Component {
-  renderArticles = () => {
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.articles}>
-        <Block flex>
-            <Card
-                flex
-                borderless
-                style={styles.card}
-                title="Record Player Logitech"
-                caption="139 minutes ago"
-                location="135$"
-                avatar="http://i.pravatar.cc/100?id=skater"
-                imageStyle={styles.cardImageRadius}
-                imageBlockStyle={{ padding: theme.SIZES.BASE / 2 }}
-                image="https://www.chartattack.com/wp-content/uploads/2019/10/record-1024x1024.jpg"
-                />
-            <View style={{height:20}}/>
-          <Block flex >
-            <Card 
-            flex
-            borderless
-            imageStyle={styles.cardImageRadius}
-            title= "Producto 1"
-            location="95$"
-            caption="90 minutes ago"
-            avatar="https://pickaface.net/gallery/avatar/avi.dixit.1254cc06503d469.png"
-            description="Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom."
-            image="https://i.pinimg.com/originals/db/26/b4/db26b4a89a1af3ae8e59af7b547aa653.jpg"
-            
-            />
-          </Block>
-          <View style={{height:20}}/>
-          <Block flex>
-          <Card 
-            flex
-            borderless
-            caption="3 minutes ago"
-            title= "Producto 2"
-            avatar="https://pickaface.net/gallery/avatar/unr_sample_161118_2054_ynlrg.png"
-            location="50$"
-            description="Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom."
-            image="https://2.bp.blogspot.com/-EnCq4Hh_7uA/UPbT8vU_guI/AAAAAAAAE2Q/aP0SQYVo6PE/s1600/sILVER.jpg"
-            />
-            </Block>
-        </Block>
-      </ScrollView>
-    )
-  }
+const DATA = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'First Item | Plata | ',
+    desc: "28/10/21",
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    title: 'Subasta 2 | Oro | ',
+    desc: "28/10/21",
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    title: 'Third Item | Plata | ',
+    desc: "28/10/21",
+  },
+];
 
-  render() {
-    return (
-      <Block flex center style={styles.home}>  
-        <Header
-        backgroundColor="#7063ff"
-        leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>this.props.navigation.toggleDrawer()}/>}
-        centerComponent={{ text: 'HOME', style: { color: '#fff' } }}
-        />
-        {this.renderArticles()}
-      </Block>
-      
-    );
-  }
+const Item = ({ title, desc }) => (
+  <ScrollView>
+    <TouchableOpacity onPress={()=>RootNavigation.navigate("Subasta")}>
+    <View style={styles.item}>
+      <Image source={require("../assets/Label-256.png")}  style={{height:50, width:50}}/>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.desc}>{desc}</Text>
+    </View>
+    </TouchableOpacity>
+    <View style={styles.sep}/>
+  </ScrollView>
+);
+
+export default class SubastasLista extends React.Component {
+  render(){
+  const renderItem = ({ item }) => <Item title={item.title} desc={item.desc}/>;
+  return (
+    <SafeAreaView style={styles.container}>
+      <Header
+                backgroundColor="#7063ff"
+                leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>this.props.navigation.toggleDrawer()}/>}
+                centerComponent={{ text: 'SUBASTAS', style: { color: '#fff',fontWeight:"bold" } }}
+            />
+      <FlatList data={DATA} renderItem={renderItem} keyExtractor={item => item.id} />
+    </SafeAreaView>
+  );
+}
 }
 
 const styles = StyleSheet.create({
-  home: {
-    width: width,    
+  container: {
+    flex: 1,
   },
-  articles: {
-    width: width - theme.SIZES.BASE * 2,
-    paddingVertical: theme.SIZES.BASE,
+  item: {
+    padding: 20,
+    
+    
+    alignItems:"center",
+    flexDirection:"row",
   },
+  title: {
+    fontSize: 20,
+  },
+  desc:{
+    fontSize:20,
+  },
+  sep:{
+    height: 1,
+    marginHorizontal:30,
+    width: "80%",  
+    backgroundColor: "#b8b6ba",
+  }
 });
-
-export default Home;

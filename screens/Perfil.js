@@ -117,7 +117,7 @@ export default class Perfil extends React.Component {
                       />
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton} onPress={()=>this.props.navigation.navigate("Subastas Distribuidas")}>
+                      <Button color="primary" style={styles.createButton} onPress={()=>this.props.navigation.navigate("Home")}>
                         <Text bold size={14} color= '#FFFFFF'>
                           ACEPTAR CAMBIOS
                         </Text>
