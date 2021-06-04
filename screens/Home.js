@@ -58,8 +58,6 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 20,
-    
-    
     alignItems:"center",
     flexDirection:"row",
   },

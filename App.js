@@ -14,6 +14,11 @@ import Perfil from "./screens/Perfil"
 import Subasta from "./screens/SubastaScreen"
 import ListaSub from "./screens/SubastasLista"
 import PujaScreen from "./screens/pujaScreen"
+import Cerrar from "./screens/cerrarSesion"
+import CBU from "./screens/CBU"
+import Tarjeta from "./screens/Tarjeta"
+import MediosPago from "./screens/MediosPago"
+import Historial from "./screens/Historial"
 
 
 const navigationRef = React.createRef();
@@ -34,7 +39,8 @@ export default function App() {
         <Stack.Screen name="SubastaScreen" component={Subasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="PUJAR" component={PujaScreen} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="Subasta" component={ListaSub} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-
+        <Stack.Screen name="Tarjeta" component={Tarjeta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+        <Stack.Screen name="CBU" component={CBU} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -65,14 +71,12 @@ function drawer() {
         <Drawer.Screen name="Perfil" component={Perfil} />
         <Drawer.Screen name="Subastar Artículo" component={Login} />
         <Drawer.Screen name="Mis Subastas" component={ListaSub} />
-        <Drawer.Screen name="Ver Historial" component={Login} />
-        <Drawer.Screen name="Medios de Pago" component={Login} />
+        <Drawer.Screen name="Ver Historial" component={Historial} />
+        <Drawer.Screen name="Registrar Medios de Pago" component={MediosPago} />
         <Drawer.Screen name="Cerrar Sesión" component={Login} />
       </Drawer.Navigator>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   container: {

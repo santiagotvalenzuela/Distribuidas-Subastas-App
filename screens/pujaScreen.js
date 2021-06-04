@@ -1,24 +1,21 @@
-import React from "react";
+import React,{useState} from "react";
 import {
   StyleSheet,
   ScrollView,
   Dimensions,
   View
 } from "react-native";
-import { Block,Card, Checkbox, Text, theme,Input,Button,DeckSwiper,Accordion} from "galio-framework";
-import { Icon,Header } from 'react-native-elements'
-import Carrousel from "../components/carrousel"
-import AppLoading from 'expo-app-loading';
+import { Block, Text, theme,Button} from "galio-framework";
+import Picker from "../components/picker"
 const { width } = Dimensions.get('screen');
 import Reloj from '../components/reloj'
-
+import { SafeAreaView } from "react-native";
 
 
 export default class Subasta extends React.Component{
     renderArticles=()=>{
-          
         return(
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <SafeAreaView showsVerticalScrollIndicator={false}>
             <View style={{height:20}}/>
             <Block style={styles.home}>
             <Text   style={styles.texto} >Macbook Air</Text>
@@ -30,15 +27,21 @@ export default class Subasta extends React.Component{
             <Text  center bold style={{fontSize:20}}>TIEMPO RESTANTE</Text>
             <Reloj/>
             <View style={{height:20}}/>
+            <Text  center bold style={{fontSize:20}}>Elegir Medio de Pago</Text>
+            <View style={{height:20}}/>
+            <Block flex middle>
+              <Picker/>
+            </Block>
+            <View style={{height:50}}/>
             <Block style={styles.block}>
                 <Block middle>
                 <Button color="#8e38ff" style={styles.createButton}>
                     <Text color="#fff">PUJAR</Text>
                 </Button>
                 </Block>
-                <View style={{height:315}}/>
+                <View style={{height:100}}/>
             </Block>
-        </ScrollView>
+        </SafeAreaView>
         )
         
     }
@@ -55,7 +58,8 @@ export default class Subasta extends React.Component{
 
 const styles = StyleSheet.create({
     home: {
-        width: width,    
+        width: width,
+        flex:1,
       },
     image: {
         flex: 1,
