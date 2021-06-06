@@ -1,7 +1,8 @@
 import React from "react";
-import {View,SafeAreaView,TouchableOpacity,ScrollView,Image,FlatList,StyleSheet} from "react-native"
+import {View,SafeAreaView,TouchableOpacity,ScrollView,Image,FlatList,StyleSheet,Dimensions} from "react-native"
 import { Icon,Header } from 'react-native-elements'
 import {Block,Text,theme} from "galio-framework"
+const { width, height } = Dimensions.get("screen");
 
 const DATA = [
     {
@@ -50,7 +51,7 @@ export default class Historial extends React.Component{
         </Block>
         <View style={{height:20}}/>
         <Block style={styles.block}>
-            <Text center bold>ARTICULOS OFERTADOS:</Text>
+            <Text center bold >ARTICULOS OFERTADOS:</Text>
             <View style={{height:10}}/>
             <Text center style={styles.text}>5</Text>
         </Block>
@@ -65,12 +66,15 @@ export default class Historial extends React.Component{
 
 const styles = StyleSheet.create({
     block:{
-        backgroundColor:"#cbc8cf",
+        
         borderTopLeftRadius: theme.SIZES.BASE * 2,
         borderTopRightRadius: theme.SIZES.BASE * 2,
         borderBottomLeftRadius:theme.SIZES.BASE * 2,
         borderBottomRightRadius:theme.SIZES.BASE * 2,
         height: 100,
+        backgroundColor:"#e8e8e8",
+        width:width*0.95,
+        marginHorizontal:10,
         },
     container: {
         flex: 1,

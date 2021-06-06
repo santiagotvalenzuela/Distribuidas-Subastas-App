@@ -4,12 +4,13 @@ import {
   ImageBackground,
   Dimensions,
   StatusBar,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ScrollView
 } from "react-native";
-import { Block, Checkbox, Text, theme,Input,Button,ScrollView } from "galio-framework";
+import { Block, Checkbox, Text, theme,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
 import { Icon,Header } from 'react-native-elements'
-
+import * as RootNavigation from '../App.js';
 
 const { width, height } = Dimensions.get("screen");
 
@@ -24,6 +25,7 @@ export default class Perfil extends React.Component {
         centerComponent={{ text: 'PERFIL', style: { color: '#fff' } }}
         />
           <Block safe flex middle>
+            <ScrollView>
             <Block style={styles.registerContainer}>
               
               <Block flex>
@@ -34,9 +36,9 @@ export default class Perfil extends React.Component {
                 </Block>
                 <Block flex center>
                   <KeyboardAvoidingView
-                    style={{ flex: 2 }}
+                    style={{ flex:1 }}
                     behavior="padding"
-                    enabled
+                    enabled="false"
                   >
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
@@ -112,6 +114,7 @@ export default class Perfil extends React.Component {
                             <Icon
                                 name='delete'
                                 style={styles.inputIcons}
+                                onPress={()=>RootNavigation.navigate("Eliminar Medio de Pago")}
                             />
                         }
                       />
@@ -127,6 +130,7 @@ export default class Perfil extends React.Component {
                 </Block>
               </Block>
             </Block>
+            </ScrollView>
           </Block> 
       </Block>
          

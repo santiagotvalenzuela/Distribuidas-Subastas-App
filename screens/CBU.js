@@ -29,7 +29,7 @@ export default class CBU extends React.Component {
                 </Block>
                 <Block flex center>
                   <KeyboardAvoidingView
-                    style={{ flex: 2 }}
+                    style={{ padding:70 }}
                     behavior="padding"
                     enabled
                   >

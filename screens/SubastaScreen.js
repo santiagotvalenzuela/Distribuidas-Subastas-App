@@ -40,7 +40,7 @@ export default class Subasta extends React.Component{
                 <Button color="#8e38ff" style={styles.createButton} onPress={()=>RootNavigation.navigate("PUJAR")}>
                     <Text color="#fff">PUJAR</Text>
                 </Button>
-                <Button color="#8e38ff" style={styles.createButton}>
+                <Button color="#8e38ff" style={styles.createButton} onPress={()=>RootNavigation.navigate("Historial")}>
                     <Text color="#fff">HISTORIAL</Text>
                 </Button>
                 </Block>

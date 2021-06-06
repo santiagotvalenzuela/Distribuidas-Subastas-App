@@ -36,7 +36,7 @@ export default class Tarjeta extends React.Component {
                 
                 <Block flex center>
                   <KeyboardAvoidingView
-                    style={{ flex: 2 }}
+                    style={{ padding: 30 }}
                     behavior="padding"
                     enabled
                   >
