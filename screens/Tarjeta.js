@@ -10,7 +10,7 @@ import {
 import { Block, Checkbox, Text, theme,Input,Button,ScrollView } from "galio-framework";
 import fondo from "../assets/wallApp.png";
 import { Icon,Header } from 'react-native-elements'
-import Picker from "../components/picker"
+import Picker from "../components/picker2"
 
 
 const { width, height } = Dimensions.get("screen");
@@ -45,6 +45,7 @@ export default class Tarjeta extends React.Component {
                         borderless
                         placeholder="Nro de Tarjeta"
                         placeholderTextColor="grey"
+                        type="number-pad"
                         iconContent={
                             <Icon
                                 name='edit'
@@ -69,8 +70,10 @@ export default class Tarjeta extends React.Component {
                     <Block width={width * 0.8}>
                       <Input
                         borderless
+                        password
                         placeholder="Código de Seguridad"
                         placeholderTextColor="grey"
+                        type="number-pad"
                         iconContent={
                             <Icon
                                 name='edit'

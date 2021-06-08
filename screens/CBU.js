@@ -50,6 +50,7 @@ export default class CBU extends React.Component {
                       <Input
                         borderless
                         placeholder="Nro de CBU"
+                        type="number-pad"
                         placeholderTextColor="grey"
                         iconContent={
                             <Icon

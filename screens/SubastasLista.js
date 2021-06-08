@@ -4,6 +4,7 @@ import { Block, theme } from 'galio-framework';
 import { Header,Icon } from 'react-native-elements'
 import { Card } from 'galio-framework';
 import * as RootNavigation from '../App.js';
+import tag from "../assets/Label-256.png"
 const { width } = Dimensions.get('screen');
 
 class Home extends React.Component {
@@ -13,6 +14,7 @@ class Home extends React.Component {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.articles}>
         <Block flex>
+        <TouchableOpacity onPress={()=>RootNavigation.navigate("SubastaScreen")}>
             <Card
                 flex
                 borderless
@@ -20,11 +22,12 @@ class Home extends React.Component {
                 title="Record Player Logitech"
                 caption="139 minutes ago"
                 location="135$"
-                avatar="http://i.pravatar.cc/100?id=skater"
+                avatar='https://pngimg.com/uploads/price_label/price_label_PNG77.png'
                 imageStyle={styles.cardImageRadius}
                 imageBlockStyle={{ padding: theme.SIZES.BASE / 2 }}
                 image="https://www.chartattack.com/wp-content/uploads/2019/10/record-1024x1024.jpg"
                 />
+                </TouchableOpacity>
             <View style={{height:20}}/>
           <Block flex >
             <TouchableOpacity onPress={()=>RootNavigation.navigate("SubastaScreen")}>
@@ -32,28 +35,30 @@ class Home extends React.Component {
             flex
             borderless
             imageStyle={styles.cardImageRadius}
-            title= "Producto 1"
-            location="95$"
+            title= "Macbook Air"
+            location="555$"
             caption="90 minutes ago"
-            avatar="https://pickaface.net/gallery/avatar/avi.dixit.1254cc06503d469.png"
+            avatar="https://pngimg.com/uploads/price_label/price_label_PNG77.png"
             description="Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom."
-            image="https://i.pinimg.com/originals/db/26/b4/db26b4a89a1af3ae8e59af7b547aa653.jpg"
+            image="https://images.idgesg.net/images/article/2018/11/macbook-air-2108-hero2-100779122-orig.jpeg"
             
             />
             </TouchableOpacity>
           </Block>
           <View style={{height:20}}/>
           <Block flex>
+          <TouchableOpacity onPress={()=>RootNavigation.navigate("SubastaScreen")}>
           <Card 
             flex
             borderless
             caption="3 minutes ago"
             title= "Producto 2"
-            avatar="https://pickaface.net/gallery/avatar/unr_sample_161118_2054_ynlrg.png"
+            avatar="https://pngimg.com/uploads/price_label/price_label_PNG77.png"
             location="50$"
             description="Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom."
             image="https://2.bp.blogspot.com/-EnCq4Hh_7uA/UPbT8vU_guI/AAAAAAAAE2Q/aP0SQYVo6PE/s1600/sILVER.jpg"
             />
+            </TouchableOpacity>
             </Block>
         </Block>
       </ScrollView>

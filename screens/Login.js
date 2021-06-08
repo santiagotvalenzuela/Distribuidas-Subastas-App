@@ -39,6 +39,7 @@ export default class Login extends React.Component {
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
                         borderless
+                        type="email-address"
                         placeholder="Email"
                         placeholderTextColor="grey"
                       />

@@ -45,6 +45,7 @@ export default class RegistroV extends React.Component {
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
                         borderless
+                        type="email-address"
                         placeholder="Email"
                         placeholderTextColor="grey"
                       />
@@ -52,7 +53,8 @@ export default class RegistroV extends React.Component {
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
                         borderless
-                        placeholder="Codigo"
+                        type="number-pad"
+                        placeholder="Código"
                         placeholderTextColor="grey"
                       />
                     </Block>

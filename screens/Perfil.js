@@ -58,6 +58,7 @@ export default class Perfil extends React.Component {
                         borderless
                         placeholder="Email"
                         placeholderTextColor="grey"
+                        type="email-address"
                         iconContent={
                             <Icon
                                 name='edit'
@@ -71,6 +72,7 @@ export default class Perfil extends React.Component {
                         borderless
                         placeholder="Documento"
                         placeholderTextColor="grey"
+                        type="number-pad"
                         iconContent={
                             <Icon
                                 name='edit'
@@ -84,6 +86,7 @@ export default class Perfil extends React.Component {
                         borderless
                         placeholder="Telefono"
                         placeholderTextColor="grey"
+                        type="number-pad"
                         iconContent={
                             <Icon
                                 name='edit'

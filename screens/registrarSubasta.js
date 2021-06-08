@@ -27,7 +27,7 @@ export default class registrarSubasta extends React.Component{
             <Block style={styles.block} height={100}>
                 <Input
                 
-                placeholder="Ingrese Nombre Descripción"
+                placeholder="Ingrese Descripción"
                 placeholderTextColor="grey"
                 style={{borderColor:theme.COLORS.INFO}}
                 />

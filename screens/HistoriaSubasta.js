@@ -15,6 +15,7 @@ export default class HistoriaS extends React.Component{
                 <View style={{height:60}}/>
                 <Text h3 style={styles.text}>Valor Actual</Text>
                 <Text h2 style={styles.text}>$4500</Text>
+                <View style={styles.sep}/>
                 <View style={{height:40}}/>
                 <Block style={styles.block}>
                     <Text center p>VALOR BASE: $4000</Text>
@@ -43,7 +44,6 @@ const styles=StyleSheet.create({
     },
     text:{
         textAlign:"center",
-        fontWeight:"bold"
     },
     image: {
         flex: 1,
@@ -65,4 +65,12 @@ const styles=StyleSheet.create({
         elevation: 1,
         overflow: "hidden"
       },
+      sep:{
+        height: 1,
+        marginHorizontal:17,
+        width: width*0.8,  
+        backgroundColor: "#b8b6ba",
+        marginBottom:8,
+        marginTop:10,
+      }
 })

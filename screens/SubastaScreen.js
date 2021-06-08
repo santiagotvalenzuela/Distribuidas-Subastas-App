@@ -8,6 +8,7 @@ import {
 import { Block,Card, Checkbox, Text, theme,Input,Button,DeckSwiper} from "galio-framework";
 
 import Carrousel from "../components/carrousel"
+import Carrusel from "../components/carrusel"
 import AppLoading from 'expo-app-loading';
 const { width } = Dimensions.get('screen');
 import Reloj from '../components/reloj'
@@ -24,9 +25,10 @@ export default class Subasta extends React.Component{
             <Text  center bold size={30} color="#000" >Macbook Air</Text>
             </Block>
             <View style={{height:20}}/>
-            <Carrousel center/>
+            <Carrusel center/>
             <View style={{height:20}}/>
             <Text  center style={{fontSize:20}}>VALOR ACTUAL: 4500$</Text>
+            <View style={styles.sep}/>
             <View style={{height:20}}/>
             <Text  center bold style={{fontSize:20}}>TIEMPO RESTANTE</Text>
             <Reloj/>
@@ -37,7 +39,7 @@ export default class Subasta extends React.Component{
                 <Text style={styles.texto}>Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el contenido del texto de un sitio mientras que mira su diseño. El punto de usar Lorem Ipsum es que tiene una distribución más o menos normal de las letras, al contrario de usar textos como por ejemplo "Contenido aquí, contenido aquí".</Text>
                 <View style={{height:20}}/>
                 <Block middle>
-                <Button color="#8e38ff" style={styles.createButton} onPress={()=>RootNavigation.navigate("PUJAR")}>
+                <Button color="#8e38ff" style={styles.createButton} onPress={()=>RootNavigation.navigate("PUJA")}>
                     <Text color="#fff">PUJAR</Text>
                 </Button>
                 <Button color="#8e38ff" style={styles.createButton} onPress={()=>RootNavigation.navigate("Historial")}>
@@ -89,6 +91,13 @@ const styles = StyleSheet.create({
         color:"#000",
         marginHorizontal:10,
 
+      },
+      sep:{
+        height: 1,
+        marginHorizontal:15,
+        width: width*0.9,  
+        backgroundColor: "#b8b6ba",
+        marginBottom:8,
       }
       
 });

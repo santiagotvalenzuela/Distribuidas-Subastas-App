@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View,ImageBackground,Button  } from 'react-native';
+import { StyleSheet, Text, View,ImageBackground,Button,Image  } from 'react-native';
 import { NavigationContainer, getFocusedRouteNameFromRoute,getActionFromState } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Registro from "./screens/Registro";
@@ -22,6 +22,8 @@ import Historial from "./screens/Historial"
 import registrarSubasta from "./screens/registrarSubasta"
 import histSubasta from "./screens/HistoriaSubasta"
 import EliminarMedio from "./screens/EliminarMedio"
+import logo from "./assets/Logo.png"
+
 
 const navigationRef = React.createRef();
 
@@ -32,14 +34,14 @@ export default function App() {
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator >
-        <Stack.Screen name="Subastas Distribuidas" component={HomeScreen} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+        <Stack.Screen name="AUCTION KING" component={HomeScreen} options={{headerShown:false}}/>
         <Stack.Screen name="Registro" component={Registro} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="RegistroV" component={RegistroV} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="RegistroF" component={RegistroF} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="Login" component={Login} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="Home"  component={drawer} options={{headerShown:false}}/>
         <Stack.Screen name="SubastaScreen" component={Subasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-        <Stack.Screen name="PUJAR" component={PujaScreen} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+        <Stack.Screen name="PUJA" component={PujaScreen} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="Subasta" component={ListaSub} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="Tarjeta" component={Tarjeta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="CBU" component={CBU} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
@@ -53,6 +55,7 @@ const Stack = createStackNavigator();
 function HomeScreen({ navigation }){
     return(
       <ImageBackground source={fondo} style={styles.image}>
+        <Image source={logo} style={styles.logo}/>
         <Card>
           <Card.Title>BIENVENIDO</Card.Title>
           <Card.Divider/>
@@ -97,4 +100,11 @@ const styles = StyleSheet.create({
     backgroundColor:"black",
     color:"black"
   },
+  logo:{
+    marginTop:20,
+    width:124,
+    height:220,
+    marginHorizontal:120,
+    marginBottom:20,
+  }
 })

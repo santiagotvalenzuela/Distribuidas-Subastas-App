@@ -4,9 +4,10 @@ import {
   ImageBackground,
   Dimensions,
   StatusBar,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ScrollView
 } from "react-native";
-import { Block, Checkbox, Text, theme,Icon,Input,Button,ScrollView } from "galio-framework";
+import { Block, Checkbox, Text, theme,Icon,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
 import { NavigationContainer } from '@react-navigation/native';
 import {  argonTheme } from "../constants/Theme";
@@ -19,6 +20,7 @@ export default class Registro extends React.Component {
       <ImageBackground source={fondo} style={styles.image}>
       <Block flex middle>
           <Block safe flex middle>
+            <ScrollView>
             <Block style={styles.registerContainer}>
               
               <Block flex>
@@ -98,6 +100,7 @@ export default class Registro extends React.Component {
                 </Block>
               </Block>
             </Block>
+            </ScrollView>
           </Block> 
       </Block>
          

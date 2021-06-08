@@ -26,9 +26,10 @@ export default class Subasta extends React.Component{
             <View style={{height:20}}/>
             <Text  center bold style={{fontSize:20}}>TIEMPO RESTANTE</Text>
             <Reloj/>
-            <View style={{height:20}}/>
+            <View style={{height:10}}/>
+            <View style={styles.sep}/>
             <Text  center bold style={{fontSize:20}}>Elegir Medio de Pago</Text>
-            <View style={{height:20}}/>
+            <View style={{height:4}}/>
             <Block flex middle>
               <Picker/>
             </Block>
@@ -85,6 +86,13 @@ const styles = StyleSheet.create({
         color:"#000",
         marginHorizontal:10,
 
+      },
+      sep:{
+        height: 1,
+        marginHorizontal:35,
+        width: width*0.8,  
+        backgroundColor: "#b8b6ba",
+        marginBottom:20,
       }
       
 });
