@@ -23,7 +23,11 @@ import registrarSubasta from "./screens/registrarSubasta"
 import histSubasta from "./screens/HistoriaSubasta"
 import EliminarMedio from "./screens/EliminarMedio"
 import logo from "./assets/Logo.png"
-
+import MisSubastas from "./screens/MisSubastas"
+import MuestraArticulo from "./screens/MuestraArticulo"
+import participar from "./screens/Participacion"
+import verArticulos from "./screens/verArticulos"
+import { ScreenStackHeaderRightView } from 'react-native-screens';
 
 const navigationRef = React.createRef();
 
@@ -46,7 +50,10 @@ export default function App() {
         <Stack.Screen name="Tarjeta" component={Tarjeta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="CBU" component={CBU} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="Historial" component={histSubasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+        <Stack.Screen name="MuestraArticulo" component={MuestraArticulo} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="Eliminar Medio de Pago" component={EliminarMedio} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+        <Stack.Screen name="Participación" component={participar} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+        <Stack.Screen name="verArticulos" component={verArticulos} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -76,6 +83,7 @@ function drawer() {
       <Drawer.Navigator >
         <Drawer.Screen name="Home" component={Home} />
         <Drawer.Screen name="Perfil" component={Perfil} />
+        <Drawer.Screen name="Mis Subastas" component={MisSubastas} />
         <Drawer.Screen name="Subastar Artículo" component={registrarSubasta} />
         <Drawer.Screen name="Ver Historial" component={Historial} />
         <Drawer.Screen name="Registrar Medios de Pago" component={MediosPago} />

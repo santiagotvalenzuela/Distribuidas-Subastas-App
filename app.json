@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Distribuidas-Subastas-App",
+    "name": "AuctionKing",
     "slug": "Distribuidas-Subastas-App",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,7 +21,8 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/Logo3.png"
-      }
+      },
+      "package": "com.distribuidas.AuctionKing"
     },
     "web": {
       "favicon": "./assets/favicon.png"

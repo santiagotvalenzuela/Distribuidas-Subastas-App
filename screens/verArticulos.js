@@ -7,20 +7,13 @@ import * as RootNavigation from '../App.js';
 import tag from "../assets/Label-256.png"
 const { width } = Dimensions.get('screen');
 
-class Home extends React.Component {
+class articulos extends React.Component {
   renderArticles = () => {
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.articles}>
-            <Button color="primary" style={styles.createButton}>
-                  <Text bold size={14} color= '#FFFFFF'>
-                    SOLICITAR PARTICIPACIÓN
-                  </Text>
-              </Button>
-        <View style={styles.sep}/>
         <Block flex>
-        <TouchableOpacity onPress={()=>RootNavigation.navigate("MuestraArticulo")}>
             <Card
                 flex
                 borderless
@@ -33,10 +26,8 @@ class Home extends React.Component {
                 imageBlockStyle={{ padding: theme.SIZES.BASE / 2 }}
                 image="https://www.chartattack.com/wp-content/uploads/2019/10/record-1024x1024.jpg"
                 />
-                </TouchableOpacity>
             <View style={{height:20}}/>
           <Block flex >
-            <TouchableOpacity onPress={()=>RootNavigation.navigate("MuestraArticulo")}>
             <Card
             flex
             borderless
@@ -49,11 +40,9 @@ class Home extends React.Component {
             image="https://images.idgesg.net/images/article/2018/11/macbook-air-2108-hero2-100779122-orig.jpeg"
             
             />
-            </TouchableOpacity>
           </Block>
           <View style={{height:20}}/>
           <Block flex>
-          <TouchableOpacity onPress={()=>RootNavigation.navigate("MuestraArticulo")}>
           <Card 
             flex
             borderless
@@ -64,7 +53,6 @@ class Home extends React.Component {
             description="Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom."
             image="https://2.bp.blogspot.com/-EnCq4Hh_7uA/UPbT8vU_guI/AAAAAAAAE2Q/aP0SQYVo6PE/s1600/sILVER.jpg"
             />
-            </TouchableOpacity>
             </Block>
         </Block>
       </ScrollView>
@@ -102,4 +90,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home;
+export default articulos;
