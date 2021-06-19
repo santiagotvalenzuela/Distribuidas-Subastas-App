@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, Text, View,ImageBackground,Button,Image  } from 'react-native';
-import { NavigationContainer, getFocusedRouteNameFromRoute,getActionFromState } from '@react-navigation/native';
+import { StyleSheet, Text, View,ImageBackground,Button,Image,Dimensions,ActivityIndicator  } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Registro from "./screens/Registro";
 import fondo from "./assets/wallApp.png";
@@ -27,16 +27,35 @@ import MisSubastas from "./screens/MisSubastas"
 import MuestraArticulo from "./screens/MuestraArticulo"
 import participar from "./screens/Participacion"
 import verArticulos from "./screens/verArticulos"
-import { ScreenStackHeaderRightView } from 'react-native-screens';
-
+import { AuthContext } from './middleware/context';
+import { authContext } from './middleware/sessions';
+const { width, height } = Dimensions.get("screen");
 const navigationRef = React.createRef();
+
+
 
 export function navigate(name) {
   navigationRef.current && navigationRef.current.navigate(name);
 }
 export default function App() {
+
+ /** React.useEffect(()=>{
+    setTimeout(()=>{
+      setIsLoading(false);
+    },1000);
+  },[]);
+
+  
+  if(isLoading){
+    return(
+    <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+      <ActivityIndicator color="#0000ff" size="large"/>
+    </View>
+    );
+  }**/
   return (
-    <NavigationContainer ref={navigationRef}>
+    <AuthContext.Provider value={authContext}>
+    <NavigationContainer>
       <Stack.Navigator >
         <Stack.Screen name="AUCTION KING" component={HomeScreen} options={{headerShown:false}}/>
         <Stack.Screen name="Registro" component={Registro} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
@@ -56,9 +75,11 @@ export default function App() {
         <Stack.Screen name="verArticulos" component={verArticulos} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
       </Stack.Navigator>
     </NavigationContainer>
+    </AuthContext.Provider>
   );
 }
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 function HomeScreen({ navigation }){
     return(
       <ImageBackground source={fondo} style={styles.image}>
@@ -75,20 +96,21 @@ function HomeScreen({ navigation }){
           </Card>
       </ImageBackground>
     )
-}
-function drawer() {
-    
+  }
+function drawer() {    
   const Drawer = createDrawerNavigator();
   return (
-      <Drawer.Navigator >
-        <Drawer.Screen name="Home" component={Home} />
-        <Drawer.Screen name="Perfil" component={Perfil} />
-        <Drawer.Screen name="Mis Subastas" component={MisSubastas} />
-        <Drawer.Screen name="Subastar Artículo" component={registrarSubasta} />
-        <Drawer.Screen name="Ver Historial" component={Historial} />
-        <Drawer.Screen name="Registrar Medios de Pago" component={MediosPago} />
-        <Drawer.Screen name="Cerrar Sesión" component={HomeScreen} />
-      </Drawer.Navigator>
+    <AuthContext.Provider value={authContext}>
+    <Drawer.Navigator >
+      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Perfil" component={Perfil} />
+      <Drawer.Screen name="Mis Subastas" component={MisSubastas} />
+      <Drawer.Screen name="Subastar Artículo" component={registrarSubasta} />
+      <Drawer.Screen name="Ver Historial" component={Historial} />
+      <Drawer.Screen name="Registrar Medios de Pago" component={MediosPago} />
+      <Drawer.Screen name="Cerrar Sesión" component={Cerrar} />
+  </Drawer.Navigator>
+  </AuthContext.Provider>
   );
 }
 
@@ -109,10 +131,10 @@ const styles = StyleSheet.create({
     color:"black"
   },
   logo:{
-    marginTop:20,
+    marginTop:height/8,
     width:124,
     height:220,
-    marginHorizontal:120,
+    marginHorizontal:width/3,
     marginBottom:20,
   }
 })

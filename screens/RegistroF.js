@@ -1,22 +1,67 @@
-import React from "react";
+import React,{useState} from "react";
 import {
   StyleSheet,
   ImageBackground,
   Dimensions,
   StatusBar,
   KeyboardAvoidingView,
-  View
+  View,
+  Alert
 } from "react-native";
 import { Block, Checkbox, Text, theme,Icon,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
-
+import * as RootNavigation from '../App.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {  argonTheme } from "../constants/Theme";
 import { ScrollView } from "react-native";
 
+
 const { width, height } = Dimensions.get("screen");
 
-export default class RegistroF extends React.Component {
-  render(){
+
+export default function RegistroF(){
+  
+  const [pass, setText] = useState('');
+  const [pass2, setText2] = useState('');
+
+  const registrar=async()=>{
+    let id;
+    try {
+      const value = await AsyncStorage.getItem('@id')
+      if(value !== null) {
+        console.log(value)
+        id=value;
+      }
+    } catch(e) {
+      console.log(e)
+    }
+    let uri="https://subastas-spring-backend.herokuapp.com/users/"+id+"/password"
+
+    if (pass===pass2){
+    fetch(uri, {
+     method:"PATCH",
+     crossDomain:true,
+     headers: {
+      'Content-Type': 'application/json'
+    },
+     body:JSON.stringify({
+       "password":pass
+     })
+    })
+    .then(response => response.json(),RootNavigation.navigate("AUCTION KING"))
+    .then(result => console.log(result))
+    .catch(error=>{if(error){
+      console.log(error)
+      Alert.alert("Error al Cargar Constraseña")
+    }
+  }
+  )
+  }
+  else{
+    Alert.alert("CONSTRASEÑAS NO SON IGUALES")
+  }
+}
+
     return (
       <ImageBackground source={fondo} style={styles.image}>
       <Block flex middle>
@@ -48,6 +93,8 @@ export default class RegistroF extends React.Component {
                         borderless
                         placeholder="Constraseña"
                         placeholderTextColor="grey"
+                        onChangeText={pass=>setText(pass)}
+                        defaultValue={pass}
                       />
                     </Block>
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
@@ -56,10 +103,12 @@ export default class RegistroF extends React.Component {
                         borderless
                         placeholder="Confirmar Contraseña"
                         placeholderTextColor="grey"
+                        onChangeText={pass2=>setText2(pass2)}
+                        defaultValue={pass2}
                       />
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton}>
+                      <Button color="primary" style={styles.createButton} onPress={registrar}>
                         <Text bold size={14} color= '#FFFFFF'>
                           VALIDAR CUENTA
                         </Text>
@@ -75,7 +124,6 @@ export default class RegistroF extends React.Component {
       </ImageBackground>
     );
   }
-}
 
 const styles = StyleSheet.create({
   registerContainer: {

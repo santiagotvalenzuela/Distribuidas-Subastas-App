@@ -1,22 +1,59 @@
-import React from "react";
+import React,{useState} from "react";
 import {
   StyleSheet,
   ImageBackground,
   Dimensions,
   StatusBar,
   KeyboardAvoidingView,
-  View
+  View,
+  Alert
 } from "react-native";
 import { Block, Checkbox, Text, theme,Icon,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
-
+import MMKVStorage from "react-native-mmkv-storage";
 import {  argonTheme } from "../constants/Theme";
 import { ScrollView } from "react-native";
-
+import * as RootNavigation from '../App.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width, height } = Dimensions.get("screen");
 
-export default class RegistroV extends React.Component {
-  render(){
+export default function RegistroV () {
+  const [code, setText] = useState('');
+  const [mail, setText2] = useState('');
+
+  const registrar=async()=>{
+    console.log(code,mail)
+    fetch('https://subastas-spring-backend.herokuapp.com/validate', {
+     method:"POST",
+     crossDomain:true,
+     headers: {
+      'Content-Type': 'application/json'
+    },
+     body:JSON.stringify({
+       "mail":mail,
+       "validationCode":code
+     })
+    })
+    .then(response => response.json())
+    .then(result => {if(result!=null){
+      console.log(result)
+      storeData(result.user_id)
+      RootNavigation.navigate("RegistroF")}})
+    .catch(error=>{if(error){
+      console.log(error)
+      Alert.alert("Email o Código Invalido")
+    }
+  })
+}
+const storeData = async (result) => {
+  try {
+    const jsonValue = JSON.stringify(result)
+    await AsyncStorage.setItem('@id', jsonValue)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
     return (
       <ImageBackground source={fondo} style={styles.image}>
       <ScrollView>
@@ -48,18 +85,22 @@ export default class RegistroV extends React.Component {
                         type="email-address"
                         placeholder="Email"
                         placeholderTextColor="grey"
+                        onChangeText={mail=>setText2(mail)}
+                        defaultValue={mail}
                       />
                     </Block>
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
                         borderless
-                        type="number-pad"
+                        type="email-address"
                         placeholder="Código"
                         placeholderTextColor="grey"
+                        onChangeText={code=>setText(code)}
+                        defaultValue={code}
                       />
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton} onPress={()=>this.props.navigation.navigate("RegistroF")}>
+                      <Button color="primary" style={styles.createButton} onPress={registrar}>
                         <Text bold size={14} color= '#FFFFFF'>
                           VALIDAR CUENTA
                         </Text>
@@ -75,7 +116,6 @@ export default class RegistroV extends React.Component {
       </ImageBackground>
     );
   }
-}
 
 const styles = StyleSheet.create({
   registerContainer: {

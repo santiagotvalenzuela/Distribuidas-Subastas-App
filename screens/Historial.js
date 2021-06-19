@@ -35,7 +35,7 @@ const DATA = [
 
 export default class Historial extends React.Component{
     render(){
-        const renderItem = ({ item }) => <Item title={item.title} desc={item.desc}/>;
+      const renderItem = ({ item }) => <Item title={item.title} desc={item.desc}/>;
         return(
         <SafeAreaView>
             <Header
@@ -61,7 +61,7 @@ export default class Historial extends React.Component{
         </SafeAreaView>
         );
     }
-}
+  }
 
 
 const styles = StyleSheet.create({

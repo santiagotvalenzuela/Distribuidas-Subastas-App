@@ -1,21 +1,49 @@
-import React from "react";
+import React,{useState} from "react";
 import {
   StyleSheet,
   ImageBackground,
   Dimensions,
   StatusBar,
   KeyboardAvoidingView,
-  ScrollView
+  ScrollView,
+  Alert
 } from "react-native";
 import { Block, Checkbox, Text, theme,Icon,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
-import { NavigationContainer } from '@react-navigation/native';
-import {  argonTheme } from "../constants/Theme";
+import * as RootNavigation from '../App.js';
+import AppLoading from 'expo-app-loading';
 
 const { width, height } = Dimensions.get("screen");
 
-export default class Registro extends React.Component {
-  render(){
+export default function Registro() {
+  const [user, setText] = useState('');
+  const [mail, setText2] = useState('');
+  const [flag,setFlag] = useState(false);
+
+  const registrar=()=>{
+    console.log(user,mail)
+    fetch('https://subastas-spring-backend.herokuapp.com/users', {
+     method:"POST",
+     crossDomain:true,
+     headers: {
+      'Content-Type': 'application/json'
+    },
+     body:JSON.stringify({
+       "username":user,
+       "mail":mail
+     })
+    })
+    .then(response => response.json())
+    .then(result => {if(result.status==="CONFLICT"){
+      Alert.alert("Usuario o Mail Ya Existen")
+      }
+      else{
+        console.log(result)
+        RootNavigation.navigate("RegistroV")
+      }
+  })
+}
+
     return (
       <ImageBackground source={fondo} style={styles.image}>
       <Block flex middle>
@@ -38,8 +66,10 @@ export default class Registro extends React.Component {
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
                         borderless
-                        placeholder="Nombre y Apellido"
+                        placeholder="Nombre de Usuario"
                         placeholderTextColor="grey"
+                        onChangeText={user=>setText(user)}
+                        defaultValue={user}
                       />
                     </Block>
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
@@ -47,6 +77,8 @@ export default class Registro extends React.Component {
                         borderless
                         placeholder="Email"
                         placeholderTextColor="grey"
+                        onChangeText={mail=>setText2(mail)}
+                        defaultValue={mail}
                       />
                     </Block>
                     <Block width={width * 0.8}>
@@ -90,10 +122,11 @@ export default class Registro extends React.Component {
                       </Button>
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton} onPress={()=>this.props.navigation.navigate("RegistroV")}>
+                      <Button color="primary" style={styles.createButton} onPress={registrar} >
                         <Text bold size={14} color= '#FFFFFF'>
                           CREAR CUENTA
                         </Text>
+
                       </Button>
                     </Block>
                   </KeyboardAvoidingView>
@@ -107,7 +140,6 @@ export default class Registro extends React.Component {
       </ImageBackground>
     );
   }
-}
 
 const styles = StyleSheet.create({
   registerContainer: {

@@ -6,14 +6,9 @@ import {
   View
 } from "react-native";
 import { Block,Card, Checkbox, Text, theme,Input,Button,DeckSwiper} from "galio-framework";
-
-import Carrousel from "../components/carrousel"
 import Carrusel from "../components/carrusel"
 import AppLoading from 'expo-app-loading';
 const { width } = Dimensions.get('screen');
-import Reloj from '../components/reloj'
-import * as RootNavigation from '../App.js';
-
 
 
 export default class Subasta extends React.Component{
@@ -34,11 +29,8 @@ export default class Subasta extends React.Component{
                 <Text center bold>DESCRIPCIÓN</Text>
                 <View style={{height:10}}/>
                 <Text style={styles.texto}>Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el contenido del texto de un sitio mientras que mira su diseño. El punto de usar Lorem Ipsum es que tiene una distribución más o menos normal de las letras, al contrario de usar textos como por ejemplo "Contenido aquí, contenido aquí".</Text>
-                <View style={{height:20}}/>
+                <View style={{height:62}}/>
                 <Block middle>
-                <Button color="#8e38ff" style={styles.createButton} onPress={()=>RootNavigation.navigate("Historial")}>
-                    <Text color="#fff">HISTORIAL</Text>
-                </Button>
                 </Block>
                 <View style={{height:90}}/>
             </Block>
