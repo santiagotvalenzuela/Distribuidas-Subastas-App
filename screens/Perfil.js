@@ -10,18 +10,16 @@ import {
 import { Block, Checkbox, Text, theme,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
 import { Icon,Header } from 'react-native-elements'
-import * as RootNavigation from '../App.js';
 
 const { width, height } = Dimensions.get("screen");
 
-export default class Perfil extends React.Component {
-  render(){
+export default function Perfil (props) {
     return (
       <ImageBackground source={fondo} style={styles.image}>
       <Block flex middle>
       <Header
         backgroundColor="#7063ff"
-        leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>this.props.navigation.toggleDrawer()}/>}
+        leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
         centerComponent={{ text: 'PERFIL', style: { color: '#fff' } }}
         />
           <Block safe flex middle>
@@ -117,7 +115,7 @@ export default class Perfil extends React.Component {
                             <Icon
                                 name='delete'
                                 style={styles.inputIcons}
-                                onPress={()=>RootNavigation.navigate("Eliminar Medio de Pago")}
+                                onPress={()=>props.navigation.navigate("Eliminar Medio de Pago")}
                             />
                         }
                       />
@@ -140,7 +138,6 @@ export default class Perfil extends React.Component {
       </ImageBackground>
     );
   }
-}
 
 const styles = StyleSheet.create({
   registerContainer: {

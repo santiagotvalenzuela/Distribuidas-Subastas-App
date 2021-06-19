@@ -3,7 +3,6 @@ import { StyleSheet, Dimensions, ScrollView,View,TouchableOpacity } from 'react-
 import { Block, theme,Text,Button } from 'galio-framework';
 import { Header,Icon } from 'react-native-elements'
 import { Card } from 'galio-framework';
-import * as RootNavigation from '../App.js';
 import tag from "../assets/Label-256.png"
 const { width } = Dimensions.get('screen');
 

@@ -12,14 +12,14 @@ import Carrusel from "../components/carrusel"
 import AppLoading from 'expo-app-loading';
 const { width } = Dimensions.get('screen');
 import Reloj from '../components/reloj'
-import * as RootNavigation from '../App.js';
 
 
 
-export default class Subasta extends React.Component{
-    renderArticles=()=>{
+export default function Subasta (props){
+
         return(
-        <ScrollView showsVerticalScrollIndicator={false}>
+            <Block flex center backgroundColor="#fff"> 
+            <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{height:20}}/>
             <Block>
             <Text  center bold size={30} color="#000" >Macbook Air</Text>
@@ -39,29 +39,19 @@ export default class Subasta extends React.Component{
                 <Text style={styles.texto}>Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el contenido del texto de un sitio mientras que mira su diseño. El punto de usar Lorem Ipsum es que tiene una distribución más o menos normal de las letras, al contrario de usar textos como por ejemplo "Contenido aquí, contenido aquí".</Text>
                 <View style={{height:20}}/>
                 <Block middle>
-                <Button color="#8e38ff" style={styles.createButton} onPress={()=>RootNavigation.navigate("PUJA")}>
+                <Button color="#8e38ff" style={styles.createButton} onPress={()=>props.navigation.navigate("PUJA")}>
                     <Text color="#fff">PUJAR</Text>
                 </Button>
-                <Button color="#8e38ff" style={styles.createButton} onPress={()=>RootNavigation.navigate("Historial")}>
+                <Button color="#8e38ff" style={styles.createButton} onPress={()=>props.navigation.navigate("Historial")}>
                     <Text color="#fff">HISTORIAL</Text>
                 </Button>
                 </Block>
                 <View style={{height:90}}/>
             </Block>
         </ScrollView>
-        )
-        
-    }
-
-
-    render(){
-        return(
-            <Block flex center backgroundColor="#fff"> 
-            {this.renderArticles()}
             </Block>
         )
     }
-}
 
 const styles = StyleSheet.create({
     home: {

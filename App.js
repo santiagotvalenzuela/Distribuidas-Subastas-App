@@ -29,6 +29,7 @@ import participar from "./screens/Participacion"
 import verArticulos from "./screens/verArticulos"
 import { AuthContext } from './middleware/context';
 import { authContext } from './middleware/sessions';
+import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen';
 const { width, height } = Dimensions.get("screen");
 const navigationRef = React.createRef();
 
@@ -54,7 +55,6 @@ export default function App() {
     );
   }**/
   return (
-    <AuthContext.Provider value={authContext}>
     <NavigationContainer>
       <Stack.Navigator >
         <Stack.Screen name="AUCTION KING" component={HomeScreen} options={{headerShown:false}}/>
@@ -63,23 +63,17 @@ export default function App() {
         <Stack.Screen name="RegistroF" component={RegistroF} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="Login" component={Login} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
         <Stack.Screen name="Home"  component={drawer} options={{headerShown:false}}/>
-        <Stack.Screen name="SubastaScreen" component={Subasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-        <Stack.Screen name="PUJA" component={PujaScreen} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-        <Stack.Screen name="Subasta" component={ListaSub} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-        <Stack.Screen name="Tarjeta" component={Tarjeta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-        <Stack.Screen name="CBU" component={CBU} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-        <Stack.Screen name="Historial" component={histSubasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-        <Stack.Screen name="MuestraArticulo" component={MuestraArticulo} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-        <Stack.Screen name="Eliminar Medio de Pago" component={EliminarMedio} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-        <Stack.Screen name="Participación" component={participar} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-        <Stack.Screen name="verArticulos" component={verArticulos} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
       </Stack.Navigator>
     </NavigationContainer>
-    </AuthContext.Provider>
   );
 }
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+const Sub = createStackNavigator();
+const Pagos = createStackNavigator();
+const Profile = createStackNavigator();
+const MisSubs = createStackNavigator();
+
 function HomeScreen({ navigation }){
     return(
       <ImageBackground source={fondo} style={styles.image}>
@@ -102,16 +96,56 @@ function drawer() {
   return (
     <AuthContext.Provider value={authContext}>
     <Drawer.Navigator >
-      <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Perfil" component={Perfil} />
-      <Drawer.Screen name="Mis Subastas" component={MisSubastas} />
+      <Drawer.Screen name="Home" component={SubastaStack} />
+      <Drawer.Screen name="Perfil" component={PerfilStack} />
+      <Drawer.Screen name="Mis Subastas" component={MisStack} />
       <Drawer.Screen name="Subastar Artículo" component={registrarSubasta} />
       <Drawer.Screen name="Ver Historial" component={Historial} />
-      <Drawer.Screen name="Registrar Medios de Pago" component={MediosPago} />
+      <Drawer.Screen name="Registrar Medios de Pago" component={PagosStack} />
       <Drawer.Screen name="Cerrar Sesión" component={Cerrar} />
   </Drawer.Navigator>
   </AuthContext.Provider>
   );
+}
+const SubastaStack =()=>{
+  return(
+  <Sub.Navigator>
+    <Sub.Screen name="Home" component={Home} options={{headerShown:false}}/>
+    <Sub.Screen name="SubastaScreen" component={Subasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+    <Sub.Screen name="PUJA" component={PujaScreen} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+    <Sub.Screen name="Historial" component={histSubasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+    <Sub.Screen name="Subasta" component={ListaSub} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+  </Sub.Navigator>
+  )
+}
+
+const PagosStack=()=>{
+  return(
+    <Pagos.Navigator>
+      <Sub.Screen name="MediosPago" component={MediosPago} options={{headerShown:false}}/>
+      <Pagos.Screen name="Tarjeta" component={Tarjeta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+      <Pagos.Screen name="CBU" component={CBU} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+    </Pagos.Navigator>
+  )
+}
+const PerfilStack =()=>{
+  return(
+    <Profile.Navigator>
+      <Sub.Screen name="Perfil" component={Perfil} options={{headerShown:false}}/>
+      <Profile.Screen name="Eliminar Medio de Pago" component={EliminarMedio} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+    </Profile.Navigator>
+  )
+}
+
+const MisStack=()=>{
+  return(
+    <MisSubs.Navigator>
+      <MisSubs.Screen name="MisSubastas" component={MisSubastas} options={{headerShown:false}}/>
+      <MisSubs.Screen name="MuestraArticulo" component={MuestraArticulo} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+      <MisSubs.Screen name="Participación" component={participar} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+      <MisSubs.Screen name="verArticulos" component={verArticulos} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+    </MisSubs.Navigator>
+  )
 }
 
 const styles = StyleSheet.create({

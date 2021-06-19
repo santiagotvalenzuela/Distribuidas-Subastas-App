@@ -10,12 +10,11 @@ import {
 } from "react-native";
 import { Block, Checkbox, Text, theme,Icon,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
-import * as RootNavigation from '../App.js';
 import AppLoading from 'expo-app-loading';
 
 const { width, height } = Dimensions.get("screen");
 
-export default function Registro() {
+export default function Registro(props) {
   const [user, setText] = useState('');
   const [mail, setText2] = useState('');
   const [flag,setFlag] = useState(false);
@@ -39,7 +38,7 @@ export default function Registro() {
       }
       else{
         console.log(result)
-        RootNavigation.navigate("RegistroV")
+        props.navigation.navigate("RegistroV")
       }
   })
 }

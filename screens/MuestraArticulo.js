@@ -11,7 +11,7 @@ import AppLoading from 'expo-app-loading';
 const { width } = Dimensions.get('screen');
 
 
-export default class Subasta extends React.Component{
+export default function Subasta (){
     renderArticles=()=>{
         return(
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -39,15 +39,12 @@ export default class Subasta extends React.Component{
         
     }
 
-
-    render(){
         return(
             <Block flex center backgroundColor="#fff"> 
             {this.renderArticles()}
             </Block>
         )
     }
-}
 
 const styles = StyleSheet.create({
     home: {

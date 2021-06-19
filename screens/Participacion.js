@@ -2,19 +2,18 @@ import React from "react";
 import {View,Dimensions,StyleSheet} from "react-native";
 import {Button,Text,Block,theme } from "galio-framework";
 import { Icon,Header } from 'react-native-elements'
-import * as RootNavigation from '../App.js';
 
 const { width, height } = Dimensions.get("screen");
 export default class  Medios extends React.Component{
     render(){
     return(
         <View>
-            <Button color="primary" style={styles.createButton} onPress={()=>RootNavigation.navigate("SubastaScreen")}>
+            <Button color="primary" style={styles.createButton} onPress={()=>this.props.navigation.navigate("SubastaScreen")}>
                 <Text bold size={14} color= '#FFFFFF'>
                     PARTICIPAR
                 </Text>
             </Button>
-            <Button color="primary" style={styles.createButton2} onPress={()=>RootNavigation.navigate("verArticulos")}>
+            <Button color="primary" style={styles.createButton2} onPress={()=>this.props.navigation.navigate("verArticulos")}>
                 <Text bold size={14} color= '#FFFFFF'>
                     VER ARTÍCULOS
                 </Text>

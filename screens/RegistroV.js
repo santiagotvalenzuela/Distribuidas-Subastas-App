@@ -13,11 +13,10 @@ import fondo from "../assets/wallApp.png";
 import MMKVStorage from "react-native-mmkv-storage";
 import {  argonTheme } from "../constants/Theme";
 import { ScrollView } from "react-native";
-import * as RootNavigation from '../App.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width, height } = Dimensions.get("screen");
 
-export default function RegistroV () {
+export default function RegistroV (props) {
   const [code, setText] = useState('');
   const [mail, setText2] = useState('');
 
@@ -38,7 +37,7 @@ export default function RegistroV () {
     .then(result => {if(result!=null){
       console.log(result)
       storeData(result.user_id)
-      RootNavigation.navigate("RegistroF")}})
+      props.navigation.navigate("RegistroF")}})
     .catch(error=>{if(error){
       console.log(error)
       Alert.alert("Email o Código Invalido")

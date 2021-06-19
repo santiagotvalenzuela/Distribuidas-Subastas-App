@@ -33,14 +33,13 @@ const DATA = [
     </ScrollView>
   );
 
-export default class Historial extends React.Component{
-    render(){
+export default function Historial (props){
       const renderItem = ({ item }) => <Item title={item.title} desc={item.desc}/>;
         return(
         <SafeAreaView>
             <Header
                 backgroundColor="#7063ff"
-                leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>this.props.navigation.toggleDrawer()}/>}
+                leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
                 centerComponent={{ text: 'HISTORIAL', style: { color: '#fff' } }}
         />
         <View style={{height:20}}/>
@@ -61,7 +60,6 @@ export default class Historial extends React.Component{
         </SafeAreaView>
         );
     }
-  }
 
 
 const styles = StyleSheet.create({

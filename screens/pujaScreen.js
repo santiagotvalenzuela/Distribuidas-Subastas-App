@@ -12,9 +12,10 @@ import Reloj from '../components/reloj'
 import { SafeAreaView } from "react-native";
 
 
-export default class Subasta extends React.Component{
-    renderArticles=()=>{
-        return(
+export default function Subasta (){
+
+      return(
+            <Block flex center backgroundColor="#fff"> 
         <SafeAreaView showsVerticalScrollIndicator={false}>
             <View style={{height:20}}/>
             <Block style={styles.home}>
@@ -43,19 +44,10 @@ export default class Subasta extends React.Component{
                 <View style={{height:100}}/>
             </Block>
         </SafeAreaView>
-        )
-        
-    }
-
-
-    render(){
-        return(
-            <Block flex center backgroundColor="#fff"> 
-            {this.renderArticles()}
             </Block>
         )
     }
-}
+
 
 const styles = StyleSheet.create({
     home: {

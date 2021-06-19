@@ -2,24 +2,22 @@ import React from "react";
 import {View,Dimensions,StyleSheet} from "react-native";
 import {Button,Text,Block,theme } from "galio-framework";
 import { Icon,Header } from 'react-native-elements'
-import * as RootNavigation from '../App.js';
 
 const { width, height } = Dimensions.get("screen");
-export default class  Medios extends React.Component{
-    render(){
+export default function  Medios (props){
     return(
         <View>
             <Header
         backgroundColor="#7063ff"
-        leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>this.props.navigation.toggleDrawer()}/>}
+        leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
         centerComponent={{ text: 'MEDIOS DE PAGO', style: { color: '#fff' } }}
             />
-            <Button color="primary" style={styles.createButton} onPress={()=>RootNavigation.navigate("Tarjeta")}>
+            <Button color="primary" style={styles.createButton} onPress={()=>props.navigation.navigate("Tarjeta")}>
                 <Text bold size={14} color= '#FFFFFF'>
                     TARJETA
                 </Text>
             </Button>
-            <Button color="primary" style={styles.createButton2} onPress={()=>RootNavigation.navigate("CBU")}>
+            <Button color="primary" style={styles.createButton2} onPress={()=>props.navigation.navigate("CBU")}>
                 <Text bold size={14} color= '#FFFFFF'>
                     CBU
                 </Text>
@@ -27,7 +25,6 @@ export default class  Medios extends React.Component{
         </View>
     );
     }
-}
 
 const styles = StyleSheet.create({
     createButton: {

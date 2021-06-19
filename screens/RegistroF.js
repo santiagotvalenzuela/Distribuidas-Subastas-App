@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { Block, Checkbox, Text, theme,Icon,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
-import * as RootNavigation from '../App.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {  argonTheme } from "../constants/Theme";
 import { ScrollView } from "react-native";
@@ -19,7 +18,7 @@ import { ScrollView } from "react-native";
 const { width, height } = Dimensions.get("screen");
 
 
-export default function RegistroF(){
+export default function RegistroF(props){
   
   const [pass, setText] = useState('');
   const [pass2, setText2] = useState('');
@@ -48,7 +47,7 @@ export default function RegistroF(){
        "password":pass
      })
     })
-    .then(response => response.json(),RootNavigation.navigate("AUCTION KING"))
+    .then(response => response.json(),props.navigation.navigate("AUCTION KING"))
     .then(result => console.log(result))
     .catch(error=>{if(error){
       console.log(error)

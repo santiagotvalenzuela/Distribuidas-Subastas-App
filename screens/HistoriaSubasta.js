@@ -5,8 +5,7 @@ import fondo from "../assets/wallApp.png";
 const { width, height } = Dimensions.get("screen");
 
 
-export default class HistoriaS extends React.Component{
-    render(){
+export default function HistoriaS (){
         return(
             <ImageBackground source={fondo} style={styles.image}>
             <Block safe flex middle>
@@ -30,7 +29,6 @@ export default class HistoriaS extends React.Component{
             </ImageBackground>
         )
     }
-}
 
 const styles=StyleSheet.create({
     block:{

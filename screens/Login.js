@@ -14,14 +14,13 @@ import { ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const axios = require('axios').default;
 const { width, height } = Dimensions.get("screen");
-import * as RootNavigation from '../App.js';
 import { AuthContext } from "../middleware/context";
 
 
-export default function Login () {
+export default function Login (props) {
   const [user, setText] = React.useState('');
   const [pass, setText2] = React.useState('');
-  const { signIn } = React.useContext(AuthContext);
+  //const { signIn } = React.useContext(AuthContext);
 
   const login=async()=>{
     fetch('https://subastas-spring-backend.herokuapp.com/login', {
@@ -39,8 +38,7 @@ export default function Login () {
     .then(result => {if(result!=null){
       console.log(result)
       storeData(result.username,result.password)
-      //signIn()
-      RootNavigation.navigate("Home")
+      props.navigation.navigate("Home")
     }})
     .catch(error=>{if(error){
       console.log(error)
@@ -99,7 +97,7 @@ const storeData = async (usuario,contra) => {
                       />
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton} onPress={login()}>
+                      <Button color="primary" style={styles.createButton} onPress={login}>
                         <Text bold size={14} color= '#FFFFFF'>
                           INGRESAR
                         </Text>

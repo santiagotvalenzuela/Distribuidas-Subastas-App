@@ -3,14 +3,13 @@ import { StyleSheet, Dimensions, ScrollView,View,TouchableOpacity } from 'react-
 import { Block, theme,Text,Button } from 'galio-framework';
 import { Header,Icon } from 'react-native-elements'
 import { Card } from 'galio-framework';
-import * as RootNavigation from '../App.js';
 import tag from "../assets/Label-256.png"
 const { width } = Dimensions.get('screen');
 
-class Home extends React.Component {
-  renderArticles = () => {
+function Home (props) {
     return (
-      <ScrollView
+      <Block flex center style={styles.home}>  
+        <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.articles}>
             <Button color="primary" style={styles.createButton}>
@@ -20,7 +19,7 @@ class Home extends React.Component {
               </Button>
         <View style={styles.sep}/>
         <Block flex>
-        <TouchableOpacity onPress={()=>RootNavigation.navigate("MuestraArticulo")}>
+        <TouchableOpacity onPress={()=>props.navigation.navigate("MuestraArticulo")}>
             <Card
                 flex
                 borderless
@@ -36,7 +35,7 @@ class Home extends React.Component {
                 </TouchableOpacity>
             <View style={{height:20}}/>
           <Block flex >
-            <TouchableOpacity onPress={()=>RootNavigation.navigate("MuestraArticulo")}>
+            <TouchableOpacity onPress={()=>props.navigation.navigate("MuestraArticulo")}>
             <Card
             flex
             borderless
@@ -53,7 +52,7 @@ class Home extends React.Component {
           </Block>
           <View style={{height:20}}/>
           <Block flex>
-          <TouchableOpacity onPress={()=>RootNavigation.navigate("MuestraArticulo")}>
+          <TouchableOpacity onPress={()=>props.navigation.navigate("MuestraArticulo")}>
           <Card 
             flex
             borderless
@@ -68,18 +67,11 @@ class Home extends React.Component {
             </Block>
         </Block>
       </ScrollView>
-    )
-  }
-
-  render() {
-    return (
-      <Block flex center style={styles.home}>  
-        {this.renderArticles()}
       </Block>
       
     );
   }
-}
+
 
 const styles = StyleSheet.create({
   home: {
