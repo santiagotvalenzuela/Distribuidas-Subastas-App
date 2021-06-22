@@ -3,6 +3,7 @@ import {View,SafeAreaView,TouchableOpacity,ScrollView,Image,FlatList,StyleSheet,
 import { Icon,Header } from 'react-native-elements'
 import {Block,Text,theme} from "galio-framework"
 const { width, height } = Dimensions.get("screen");
+import { AuthContext } from "../middleware/context";
 
 const DATA = [
     {
@@ -35,6 +36,21 @@ const DATA = [
 
 export default function Historial (props){
       const renderItem = ({ item }) => <Item title={item.title} desc={item.desc}/>;
+      const { checkSession } = React.useContext(AuthContext);
+      const valor=checkSession()
+      if(valor===false){
+        return(
+          <View >
+                <Header
+        backgroundColor="#7063ff"
+        leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
+        centerComponent={{ text:'HISTORIAL', style: { color: '#fff' } }}
+      />
+      <Text center style={{marginTop:300}}>Necesita Iniciar Sesión Para Accerder a Esta Función</Text>
+      </View>
+        );
+      }
+      else{
         return(
         <SafeAreaView>
             <Header
@@ -60,6 +76,7 @@ export default function Historial (props){
         </SafeAreaView>
         );
     }
+  }
 
 
 const styles = StyleSheet.create({

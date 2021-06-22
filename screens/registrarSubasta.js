@@ -1,109 +1,134 @@
 import React, { useState, useEffect } from 'react';
-import {View,Image,StyleSheet,Dimensions,Platform,Alert} from "react-native"
+import {View,Image,StyleSheet,Dimensions,Platform,Alert,ActivityIndicator} from "react-native"
 import { Block, Checkbox, Text, theme,Input,Button } from "galio-framework";
 import { Icon,Header } from 'react-native-elements'
 import * as ImagePicker from 'expo-image-picker';
+import { AuthContext } from "../middleware/context";
 
 
 const { width, height } = Dimensions.get("screen");
 
 
 export default function registrarSubasta(props){
-    const [art, setText] = React.useState('');
-    const [desc, setText2] = React.useState('');
-    const [image, setImage] = useState(null);
-    const [resultado,setRes] = useState(null);
-    const [imagenesList,setImagenesList] = useState([]);
+    const { checkSession } = React.useContext(AuthContext);
 
-    useEffect(() => {
-        (async () => {
-        if (Platform.OS !== 'web') {
-            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-            if (status !== 'granted') {
-            alert('Sorry, we need camera roll permissions to make this work!');
-            }
+        const valor=checkSession()
+
+        if (valor===false){
+            return(
+                <View >
+                    <Header
+            backgroundColor="#7063ff"
+            leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
+            centerComponent={{ text: 'SUBASTAR ARTICULO', style: { color: '#fff' } }}
+        />
+                <Text center style={{marginTop:300}}>Necesita Iniciar Sesión Para Accerder a Esta Función</Text>
+                </View>
+            );
         }
-        })();
-    }, []);
-
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: false,
-        allowsMultipleSelection: true,
-        aspect: [9, 16],
-        quality: 1,
-        base64:true,
-        });
-
-
-        if (!result.cancelled) {
-        setImage(result.uri);
-        setRes(result.base64);
-        }
-    };
-
-    const cloudinaryUpload = (async) => {
-        const data = new FormData()
-        let dato="";
-        data.append('file', "data:image/jpg;base64,"+resultado)
-        data.append('upload_preset', 'santiAPI')
-        data.append("cloud_name", "dr4i78wvu")
-        fetch("https://api.cloudinary.com/v1_1/dr4i78wvu/image/upload", {
-            method: "POST",
-            headers:{
-                'Content-Type':'multipart/form-data',
-            },
-            body: data
-            }).then(res => res.json())
-            .then(res=>{if(res!=null){
-                console.log(res.url)
-                setImagenesList(imagenesList.concat(res.url))
-                Alert.alert("Imagen Cargada")
-            }
-        })
-
-            .catch(err => {
-                Alert.alert("An Error Occured While Uploading"),console.log(err)
-            })
-        }
-
-        function cargarSubasta(){
-            console.log(imagenesList)
-        }
-        /**const cargarSubasta = ()=>{
-            console.log(imagenesList)
-            console.log(code,mail)
-            fetch('https://subastas-spring-backend.herokuapp.com/validate', {
-                method:"POST",
-                crossDomain:true,
-                headers: {
-                'Content-Type': 'application/json'
-            },
-                body:JSON.stringify({
-                "mail":mail,
-                "validationCode":code
-                })
-            })
-            .then(response => response.json())
-            .then(result => {if(result!=null){
-                console.log(result)
-                storeData(result.user_id)
-                RootNavigation.navigate("RegistroF")}})
-            .catch(error=>{if(error){
-                console.log(error)
-                Alert.alert("Email o Código Invalido")
-            }
-            })
-        }**/
+        else{
 
      return(
-            <View >
+         <View>
             <Header
-                backgroundColor="#7063ff"
-                leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
-                centerComponent={{ text: 'SUBASTAR ARTICULO', style: { color: '#fff' } }}
-            />
+            backgroundColor="#7063ff"
+            leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
+            centerComponent={{ text: 'SUBASTAR ARTICULO', style: { color: '#fff' } }}
+        />
+            <Content/>
+        </View>
+        );
+     }
+    }
+
+    const Content=()=>{
+        const [art, setText] = React.useState('');
+        const [desc, setText2] = React.useState('');
+        const [image, setImage] = useState(null);
+        const [resultado,setRes] = useState(null);
+        const [imagenesList,setImagenesList] = useState([]);
+
+        useEffect(() => {
+            (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (status !== 'granted') {
+                alert('Sorry, we need camera roll permissions to make this work!');
+                }
+            }
+            })();
+        }, []);
+
+        const pickImage = async () => {
+            let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: false,
+            allowsMultipleSelection: true,
+            aspect: [9, 16],
+            quality: 1,
+            base64:true,
+            });
+
+
+            if (!result.cancelled) {
+            setImage(result.uri);
+            setRes(result.base64);
+            }
+        };
+
+        const cloudinaryUpload = (async) => {
+            const data = new FormData()
+            let dato="";
+            data.append('file', "data:image/jpg;base64,"+resultado)
+            data.append('upload_preset', 'santiAPI')
+            data.append("cloud_name", "dr4i78wvu")
+            fetch("https://api.cloudinary.com/v1_1/dr4i78wvu/image/upload", {
+                method: "POST",
+                headers:{
+                    'Content-Type':'multipart/form-data',
+                },
+                body: data
+                }).then(res => res.json())
+                .then(res=>{if(res!=null){
+                    console.log(res.url)
+                    setImagenesList(imagenesList.concat(res.url))
+                    Alert.alert("Imagen Cargada")
+                }
+            })
+
+                .catch(err => {
+                    Alert.alert("An Error Occured While Uploading"),console.log(err)
+                })
+            }
+
+    const  cargarSubasta=()=>{
+        //console.log(imagenesList)
+            fetch('https://subastas-spring-backend.herokuapp.com/items', {
+            method:"POST",
+            mode: 'cors',
+            crossDomain:true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin',
+            body:JSON.stringify({
+                "title":art,
+                "description":desc,
+                "image_urls":imagenesList
+                })
+            })
+            .then(response =>response.json())
+            .then(result => {if(result!=null){
+            console.log(result)
+            }})
+            .catch(error=>{if(error){
+            console.log(error)
+            Alert.alert("ERROR")
+            }
+        })
+    }
+        return(
+            <View >
             <Block style={styles.block}>
                 <Input
                 style={{borderColor:theme.COLORS.INFO}}
@@ -134,9 +159,9 @@ export default function registrarSubasta(props){
             <View style={{height:10}}/>
             <Button color="info" style={styles.button2} onPress={cargarSubasta}>REGISTRAR ARTICULO</Button>
             </View>
-        );
-    }
 
+        )
+    }
 const styles=StyleSheet.create({
     block:{
         width:width*0.9,

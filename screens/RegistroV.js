@@ -10,8 +10,6 @@ import {
 } from "react-native";
 import { Block, Checkbox, Text, theme,Icon,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
-import MMKVStorage from "react-native-mmkv-storage";
-import {  argonTheme } from "../constants/Theme";
 import { ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width, height } = Dimensions.get("screen");
@@ -35,7 +33,6 @@ export default function RegistroV (props) {
     })
     .then(response => response.json())
     .then(result => {if(result!=null){
-      console.log(result)
       storeData(result.user_id)
       props.navigation.navigate("RegistroF")}})
     .catch(error=>{if(error){

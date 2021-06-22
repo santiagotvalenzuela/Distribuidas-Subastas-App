@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar,Button, Image,TouchableOpacity } from 'react-native';
 import { Icon,Header } from 'react-native-elements'
-import Label from "../assets/Label-256.png"
+import { AuthContext } from "../middleware/context";
 
 const DATA = [
   {
@@ -25,6 +25,22 @@ const Item = ({ title, desc }) => (
 
 export default function MisSubastas (props) {
   const renderItem = ({ item }) => <Item title={item.title} desc={item.desc}/>;
+  const { checkSession } = React.useContext(AuthContext);
+  const valor=checkSession()
+  
+  if (valor===false){
+    return(
+      <View >
+                <Header
+        backgroundColor="#7063ff"
+        leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
+        centerComponent={{ text: 'MIS SUBASTAS', style: { color: '#fff' } }}
+      />
+      <Text center style={{marginTop:300}}>Necesita Iniciar Sesión Para Accerder a Esta Función</Text>
+      </View>
+  );
+  }
+  else{
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -37,6 +53,7 @@ export default function MisSubastas (props) {
       </TouchableOpacity>
     </SafeAreaView>
   );
+  }
 }
 
 const styles = StyleSheet.create({

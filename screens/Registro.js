@@ -10,14 +10,16 @@ import {
 } from "react-native";
 import { Block, Checkbox, Text, theme,Icon,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
-import AppLoading from 'expo-app-loading';
+
 
 const { width, height } = Dimensions.get("screen");
 
 export default function Registro(props) {
   const [user, setText] = useState('');
   const [mail, setText2] = useState('');
-  const [flag,setFlag] = useState(false);
+  const [address, setText3] = useState('');
+  const [document,setText4] = useState('');
+  const [phone,setText5] = useState('');
 
   const registrar=()=>{
     console.log(user,mail)
@@ -29,7 +31,10 @@ export default function Registro(props) {
     },
      body:JSON.stringify({
        "username":user,
-       "mail":mail
+       "mail":mail,
+       "address":address,
+       "document":document,
+       "phone":phone
      })
     })
     .then(response => response.json())
@@ -85,6 +90,8 @@ export default function Registro(props) {
                         borderless
                         placeholder="Documento"
                         placeholderTextColor="grey"
+                        onChangeText={document=>setText4(document)}
+                        defaultValue={document}
                       />
                     </Block>
                     <Block width={width * 0.8}>
@@ -92,6 +99,8 @@ export default function Registro(props) {
                         borderless
                         placeholder="Telefono"
                         placeholderTextColor="grey"
+                        onChangeText={phone=>setText5(phone)}
+                        defaultValue={phone}
                       />
                     </Block>
                     <Block width={width * 0.8}>
@@ -99,6 +108,8 @@ export default function Registro(props) {
                         borderless
                         placeholder="Domicilio"
                         placeholderTextColor="grey"
+                        onChangeText={address=>setText3(address)}
+                        defaultValue={address}
                       />
                     </Block>
                     <Block row width={width * 0.75}>

@@ -3,20 +3,23 @@ import { StyleSheet, Dimensions, ScrollView,View,TouchableOpacity } from 'react-
 import { Block, theme,Text,Button } from 'galio-framework';
 import { Header,Icon } from 'react-native-elements'
 import { Card } from 'galio-framework';
-import tag from "../assets/Label-256.png"
+import { AuthContext } from "../middleware/context";
 const { width } = Dimensions.get('screen');
 
-function Home (props) {
+function SubastasLista (props) {
+  const { checkSession } = React.useContext(AuthContext);
+  const valor=checkSession()
     return (
       <Block flex center style={styles.home}>  
         <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.articles}>
+          { valor===true ?
             <Button color="primary" style={styles.createButton}>
                   <Text bold size={14} color= '#FFFFFF'>
                     SOLICITAR PARTICIPACIÓN
                   </Text>
-              </Button>
+              </Button>:null}
         <View style={styles.sep}/>
         <Block flex>
         <TouchableOpacity onPress={()=>props.navigation.navigate("MuestraArticulo")}>
@@ -94,4 +97,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home;
+export default SubastasLista;

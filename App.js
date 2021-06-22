@@ -28,8 +28,6 @@ import MuestraArticulo from "./screens/MuestraArticulo"
 import participar from "./screens/Participacion"
 import verArticulos from "./screens/verArticulos"
 import { AuthContext } from './middleware/context';
-import { authContext } from './middleware/sessions';
-import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen';
 const { width, height } = Dimensions.get("screen");
 const navigationRef = React.createRef();
 
@@ -39,22 +37,21 @@ export function navigate(name) {
   navigationRef.current && navigationRef.current.navigate(name);
 }
 export default function App() {
+  const [session, SetSession] = React.useState(false)
 
- /** React.useEffect(()=>{
-    setTimeout(()=>{
-      setIsLoading(false);
-    },1000);
-  },[]);
-
-  
-  if(isLoading){
-    return(
-    <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-      <ActivityIndicator color="#0000ff" size="large"/>
-    </View>
-    );
-  }**/
+ const authContext = React.useMemo(()=>({
+      signIn: ()=>{
+        SetSession(true)
+      },
+      signOut: ()=>{
+        SetSession(false)
+      },
+      checkSession: ()=>{
+        return session;
+      },
+ }))
   return (
+    <AuthContext.Provider value={authContext}>
     <NavigationContainer>
       <Stack.Navigator >
         <Stack.Screen name="AUCTION KING" component={HomeScreen} options={{headerShown:false}}/>
@@ -65,6 +62,7 @@ export default function App() {
         <Stack.Screen name="Home"  component={drawer} options={{headerShown:false}}/>
       </Stack.Navigator>
     </NavigationContainer>
+    </AuthContext.Provider>
   );
 }
 const Stack = createStackNavigator();
@@ -94,7 +92,6 @@ function HomeScreen({ navigation }){
 function drawer() {    
   const Drawer = createDrawerNavigator();
   return (
-    <AuthContext.Provider value={authContext}>
     <Drawer.Navigator >
       <Drawer.Screen name="Home" component={SubastaStack} />
       <Drawer.Screen name="Perfil" component={PerfilStack} />
@@ -102,17 +99,15 @@ function drawer() {
       <Drawer.Screen name="Subastar Artículo" component={registrarSubasta} />
       <Drawer.Screen name="Ver Historial" component={Historial} />
       <Drawer.Screen name="Registrar Medios de Pago" component={PagosStack} />
-      <Drawer.Screen name="Cerrar Sesión" component={Cerrar} />
+      <Drawer.Screen name="Cerrar Sesión / Salir" component={Cerrar} />
   </Drawer.Navigator>
-  </AuthContext.Provider>
   );
 }
 const SubastaStack =()=>{
   return(
   <Sub.Navigator>
     <Sub.Screen name="Home" component={Home} options={{headerShown:false}}/>
-    <Sub.Screen name="SubastaScreen" component={Subasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-    <Sub.Screen name="PUJA" component={PujaScreen} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+    <Sub.Screen name="MuestraArticulo" component={MuestraArticulo} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
     <Sub.Screen name="Historial" component={histSubasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
     <Sub.Screen name="Subasta" component={ListaSub} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
   </Sub.Navigator>
@@ -141,7 +136,8 @@ const MisStack=()=>{
   return(
     <MisSubs.Navigator>
       <MisSubs.Screen name="MisSubastas" component={MisSubastas} options={{headerShown:false}}/>
-      <MisSubs.Screen name="MuestraArticulo" component={MuestraArticulo} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+      <MisSubs.Screen name="SubastaScreen" component={Subasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+      <Sub.Screen name="PUJA" component={PujaScreen} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
       <MisSubs.Screen name="Participación" component={participar} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
       <MisSubs.Screen name="verArticulos" component={verArticulos} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
     </MisSubs.Navigator>

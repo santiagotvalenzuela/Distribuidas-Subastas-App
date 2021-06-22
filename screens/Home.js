@@ -32,7 +32,7 @@ const Item = ({ title, desc }) => (
   </ScrollView>
 );
 
-export default function SubastasLista (props){
+export default function Home (props){
   const renderItem = ({ item }) => <Item title={item.title} desc={item.desc} />;
   return (
     <SafeAreaView style={styles.container}>
@@ -41,7 +41,7 @@ export default function SubastasLista (props){
                 leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
                 centerComponent={{ text: 'SUBASTAS', style: { color: '#fff',fontWeight:"bold" } }}
             />
-      <TouchableOpacity onPress={()=>props.navigation.navigate("SubastaScreen")}>
+      <TouchableOpacity onPress={()=>props.navigation.navigate("Subasta")}>
       <FlatList data={DATA} renderItem={renderItem} keyExtractor={item => item.id} />
       </TouchableOpacity>
     </SafeAreaView>

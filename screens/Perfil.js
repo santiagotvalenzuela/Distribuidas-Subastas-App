@@ -4,140 +4,166 @@ import {
   ImageBackground,
   Dimensions,
   StatusBar,
+  View,
   KeyboardAvoidingView,
   ScrollView
 } from "react-native";
 import { Block, Checkbox, Text, theme,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
 import { Icon,Header } from 'react-native-elements'
+import { AuthContext } from "../middleware/context";
 
 const { width, height } = Dimensions.get("screen");
 
 export default function Perfil (props) {
-    return (
-      <ImageBackground source={fondo} style={styles.image}>
-      <Block flex middle>
-      <Header
+  const { checkSession } = React.useContext(AuthContext);
+  const valor=checkSession()
+  if (valor===false){
+    return(
+        <View >
+                <Header
         backgroundColor="#7063ff"
         leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
-        centerComponent={{ text: 'PERFIL', style: { color: '#fff' } }}
-        />
-          <Block safe flex middle>
-            <ScrollView>
-            <Block style={styles.registerContainer}>
-              
-              <Block flex>
-                <Block flex={0.17} middle>
-                  <Text bold color="#000000" size={22}>
-                    Perfil
-                  </Text>
-                </Block>
-                <Block flex center>
-                  <KeyboardAvoidingView
-                    style={{ flex:1 }}
-                    behavior="padding"
-                    enabled="false"
-                  >
-                    <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                        borderless
-                        placeholder="Nombre y Apellido"
-                        placeholderTextColor="grey"
-                        iconContent={
-                            <Icon
-                                name='edit'
-                                style={styles.inputIcons}
-                            />
-                        }
-                      />
-                    </Block>
-                    <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                        borderless
-                        placeholder="Email"
-                        placeholderTextColor="grey"
-                        type="email-address"
-                        iconContent={
-                            <Icon
-                                name='edit'
-                                style={styles.inputIcons}
-                            />
-                        }
-                      />
-                    </Block>
-                    <Block width={width * 0.8}>
-                      <Input
-                        borderless
-                        placeholder="Documento"
-                        placeholderTextColor="grey"
-                        type="number-pad"
-                        iconContent={
-                            <Icon
-                                name='edit'
-                                style={styles.inputIcons}
-                            />
-                        }
-                      />
-                    </Block>
-                    <Block width={width * 0.8}>
-                      <Input
-                        borderless
-                        placeholder="Telefono"
-                        placeholderTextColor="grey"
-                        type="number-pad"
-                        iconContent={
-                            <Icon
-                                name='edit'
-                                style={styles.inputIcons}
-                            />
-                        }
-                      />
-                    </Block>
-                    <Block width={width * 0.8}>
-                      <Input
-                        borderless
-                        placeholder="Domicilio"
-                        placeholderTextColor="grey"
-                        iconContent={
-                            <Icon
-                                name='edit'
-                                style={styles.inputIcons}
-                            />
-                        }
-                      />
-                    </Block>
-                    <Block width={width * 0.8}>
-                      <Input
-                        borderless
-                        placeholder="Medios de Pago Registrados"
-                        placeholderTextColor="grey"
-                        iconContent={
-                            <Icon
-                                name='delete'
-                                style={styles.inputIcons}
-                                onPress={()=>props.navigation.navigate("Eliminar Medio de Pago")}
-                            />
-                        }
-                      />
-                    </Block>
-                    <Block middle>
-                      <Button color="primary" style={styles.createButton} onPress={()=>this.props.navigation.navigate("Home")}>
-                        <Text bold size={14} color= '#FFFFFF'>
-                          ACEPTAR CAMBIOS
-                        </Text>
-                      </Button>
-                    </Block>
-                  </KeyboardAvoidingView>
-                </Block>
-              </Block>
-            </Block>
-            </ScrollView>
-          </Block> 
-      </Block>
-         
-      </ImageBackground>
+        centerComponent={{ text: 'PERIFL', style: { color: '#fff' } }}
+    />
+        <Text center style={{marginTop:300}}>Necesita Iniciar Sesión Para Accerder a Esta Función</Text>
+        </View>
     );
   }
+    else{
+      return(
+        <View>
+           <Header
+           backgroundColor="#7063ff"
+           leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
+           centerComponent={{ text: 'PERFIL', style: { color: '#fff' } }}
+       />
+           <Content/>
+       </View>
+       );
+    }
+  
+  }
+const Content=()=>{
+  return (
+    <ImageBackground source={fondo} style={styles.image}>
+    <Block flex middle>
+        <Block safe flex middle>
+          <ScrollView>
+          <Block style={styles.registerContainer}>
+            
+            <Block flex>
+              <Block flex={0.17} middle>
+                <Text bold color="#000000" size={22}>
+                  Perfil
+                </Text>
+              </Block>
+              <Block flex center>
+                <KeyboardAvoidingView
+                  style={{ flex:1 }}
+                  behavior="padding"
+                  enabled="false"
+                >
+                  <Block width={width * 0.8} style={{ marginBottom: 15 }}>
+                    <Input
+                      borderless
+                      placeholder="Nombre y Apellido"
+                      placeholderTextColor="grey"
+                      iconContent={
+                          <Icon
+                              name='edit'
+                              style={styles.inputIcons}
+                          />
+                      }
+                    />
+                  </Block>
+                  <Block width={width * 0.8} style={{ marginBottom: 15 }}>
+                    <Input
+                      borderless
+                      placeholder="Email"
+                      placeholderTextColor="grey"
+                      type="email-address"
+                      iconContent={
+                          <Icon
+                              name='edit'
+                              style={styles.inputIcons}
+                          />
+                      }
+                    />
+                  </Block>
+                  <Block width={width * 0.8}>
+                    <Input
+                      borderless
+                      placeholder="Documento"
+                      placeholderTextColor="grey"
+                      type="number-pad"
+                      iconContent={
+                          <Icon
+                              name='edit'
+                              style={styles.inputIcons}
+                          />
+                      }
+                    />
+                  </Block>
+                  <Block width={width * 0.8}>
+                    <Input
+                      borderless
+                      placeholder="Telefono"
+                      placeholderTextColor="grey"
+                      type="number-pad"
+                      iconContent={
+                          <Icon
+                              name='edit'
+                              style={styles.inputIcons}
+                          />
+                      }
+                    />
+                  </Block>
+                  <Block width={width * 0.8}>
+                    <Input
+                      borderless
+                      placeholder="Domicilio"
+                      placeholderTextColor="grey"
+                      iconContent={
+                          <Icon
+                              name='edit'
+                              style={styles.inputIcons}
+                          />
+                      }
+                    />
+                  </Block>
+                  <Block width={width * 0.8}>
+                    <Input
+                      borderless
+                      placeholder="Medios de Pago Registrados"
+                      placeholderTextColor="grey"
+                      iconContent={
+                          <Icon
+                              name='delete'
+                              style={styles.inputIcons}
+                              onPress={()=>props.navigation.navigate("Eliminar Medio de Pago")}
+                          />
+                      }
+                    />
+                  </Block>
+                  <Block middle>
+                    <Button color="primary" style={styles.createButton} onPress={()=>this.props.navigation.navigate("Home")}>
+                      <Text bold size={14} color= '#FFFFFF'>
+                        ACEPTAR CAMBIOS
+                      </Text>
+                    </Button>
+                  </Block>
+                </KeyboardAvoidingView>
+              </Block>
+            </Block>
+          </Block>
+          </ScrollView>
+        </Block> 
+    </Block>
+       
+    </ImageBackground>
+  );
+}
 
 const styles = StyleSheet.create({
   registerContainer: {

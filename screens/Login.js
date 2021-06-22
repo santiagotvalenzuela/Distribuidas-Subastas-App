@@ -20,24 +20,28 @@ import { AuthContext } from "../middleware/context";
 export default function Login (props) {
   const [user, setText] = React.useState('');
   const [pass, setText2] = React.useState('');
-  //const { signIn } = React.useContext(AuthContext);
+  const { signIn } = React.useContext(AuthContext);
 
   const login=async()=>{
     fetch('https://subastas-spring-backend.herokuapp.com/login', {
      method:"POST",
+     mode: 'cors',
      crossDomain:true,
      headers: {
-      'Content-Type': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
     },
+    credentials: 'same-origin',
      body:JSON.stringify({
        "username":user,
        "password":pass
      })
     })
-    .then(response => response.json())
+    .then(response =>response.json())
     .then(result => {if(result!=null){
       console.log(result)
-      storeData(result.username,result.password)
+      storeData(result.userInformation.username,result.session)
+      signIn()
       props.navigation.navigate("Home")
     }})
     .catch(error=>{if(error){
@@ -46,12 +50,12 @@ export default function Login (props) {
     }
   })
 }
-const storeData = async (usuario,contra) => {
+const storeData = async (usuario,cookie) => {
   try {
     const jsonValue = JSON.stringify(usuario)
     await AsyncStorage.setItem('@user', jsonValue)
-    const jsonValue2 = JSON.stringify(contra)
-    await AsyncStorage.setItem('@password', jsonValue2)
+    const jsonValue2 = JSON.stringify(cookie)
+    await AsyncStorage.setItem('@cookie', jsonValue2)
   } catch (e) {
     console.log(e)
   }

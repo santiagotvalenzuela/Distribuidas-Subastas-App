@@ -2,9 +2,25 @@ import React from "react";
 import {View,Dimensions,StyleSheet} from "react-native";
 import {Button,Text,Block,theme } from "galio-framework";
 import { Icon,Header } from 'react-native-elements'
+import { AuthContext } from "../middleware/context";
 
 const { width, height } = Dimensions.get("screen");
 export default function  Medios (props){
+    const { checkSession } = React.useContext(AuthContext);
+    const valor = checkSession();
+    if(valor===false){
+        return(
+            <View >
+                <Header
+                    backgroundColor="#7063ff"
+                    leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
+                    centerComponent={{ text:'HISTORIAL', style: { color: '#fff' } }}
+                />
+             <Text center style={{marginTop:300}}>Necesita Iniciar Sesión Para Accerder a Esta Función</Text>
+      </View>
+        )
+    }
+    else{
     return(
         <View>
             <Header
@@ -25,6 +41,7 @@ export default function  Medios (props){
         </View>
     );
     }
+}
 
 const styles = StyleSheet.create({
     createButton: {
