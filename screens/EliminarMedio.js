@@ -5,8 +5,7 @@ import {Icon} from "react-native-elements"
 const { width, height } = Dimensions.get("screen");
 import fondo from "../assets/wallApp.png";
 
-export default class EliminarMedio extends React.Component{
-    render(){
+export default function EliminarMedio(){
         return(
             <ImageBackground source={fondo} style={styles.image}>
             <Block safe flex middle>
@@ -30,7 +29,6 @@ export default class EliminarMedio extends React.Component{
             </ImageBackground>
         )
     }
-}
 
 const styles=StyleSheet.create({
     block:{

@@ -47,7 +47,7 @@ export default function RegistroF(props){
        "password":pass
      })
     })
-    .then(response => response.json(),props.navigation.navigate("AUCTION KING"))
+    .then(response => response.json(),props.navigation.navigate("AUCTION KING"),Alert.alert("Usuario Creado!"))
     .then(result => console.log(result))
     .catch(error=>{if(error){
       console.log(error)

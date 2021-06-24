@@ -1,39 +1,40 @@
-import React from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Image,TouchableOpacity,ScrollView } from 'react-native';
+import React, { useEffect } from 'react';
+import { SafeAreaView, View,Button, FlatList, StyleSheet, Text, StatusBar, Image,TouchableHighlight,ScrollView } from 'react-native';
 import { Icon,Header } from 'react-native-elements'
 import Label from "../assets/Label-256.png"
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Subasta 1 | Plata | ',
-    desc: "15/5/21",
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Subasta 2 | Oro | ',
-    desc: "5/5/21",
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Subasta 3 | Plata | ',
-    desc: "3/6/21",
-  },
-];
-
-const Item = ({ title, desc }) => (
-  <ScrollView>
-    <View style={styles.item}>
-      <Image source={require("../assets/Label-256.png")}  style={{height:50, width:50}}/>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.desc}>{desc}</Text>
-    </View>
-    <View style={styles.sep}/>
-  </ScrollView>
-);
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from "../middleware/context";
 
 export default function Home (props){
-  const renderItem = ({ item }) => <Item title={item.title} desc={item.desc} />;
+  const { setId } = React.useContext(AuthContext);
+  const [subastas,setSubs]=React.useState([]);
+
+  useEffect(()=>{
+    fetch('https://subastas-spring-backend.herokuapp.com/auctions', {
+        method:"GET",
+        mode: 'cors',
+        crossDomain:true,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        })
+        .then(response =>response.json())
+        .then(response => {if(response!=null){
+        //console.log(response)
+        setSubs(subastas.concat(response))
+        }})
+        .catch(error=>{if(error){
+        console.log(error)
+        Alert.alert("ERROR")
+        }
+    })
+  },[]);
+  
+  function nav(key){
+    setId(key)
+    props.navigation.navigate("Subasta")
+  }
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -41,11 +42,36 @@ export default function Home (props){
                 leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
                 centerComponent={{ text: 'SUBASTAS', style: { color: '#fff',fontWeight:"bold" } }}
             />
-      <TouchableOpacity onPress={()=>props.navigation.navigate("Subasta")}>
-      <FlatList data={DATA} renderItem={renderItem} keyExtractor={item => item.id} />
-      </TouchableOpacity>
-    </SafeAreaView>
-  );
+            <FlatList
+                ItemSeparatorComponent={
+                  Platform.OS !== 'android' &&
+                  (({ highlighted }) => (
+                    <View
+                      style={[
+                        styles.separator,
+                        highlighted && { marginLeft: 0 }
+                      ]}
+                    />
+                  ))
+                }
+                data={subastas}
+                renderItem={({ item, index, separators }) => (
+                  <TouchableHighlight
+                    key={item.id}
+                    onPress={() =>nav(item.id)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <View style={styles.item}>
+                    <Image source={require("../assets/Label-256.png")}  style={{height:50, width:50}}/>
+                      <Text style={styles.title}>{item.title}</Text>
+                      <Text style={styles.title}>  | </Text>
+                      <Text style={styles.desc}>{item.category}</Text>
+                    </View>
+                  </TouchableHighlight>
+                )}
+              />
+            </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -56,6 +82,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems:"center",
     flexDirection:"row",
+    backgroundColor:"#fff"
   },
   title: {
     fontSize: 20,
@@ -68,5 +95,8 @@ const styles = StyleSheet.create({
     marginHorizontal:30,
     width: "80%",  
     backgroundColor: "#b8b6ba",
+  },
+  separator:{
+    backgroundColor:"#fff"
   }
 });

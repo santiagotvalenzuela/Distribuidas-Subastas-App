@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert,StyleSheet,View } from "react-native";
+import { Alert,StyleSheet,View,Dimensions } from "react-native";
+import { Icon,Header } from 'react-native-elements'
 import { AuthContext } from "../middleware/context";
 import {Button} from "galio-framework";
-
+const { width, height } = Dimensions.get("screen");
 
 export default function cerrar(props){
   const { signOut } = React.useContext(AuthContext); 
@@ -43,13 +44,15 @@ const logOut=async(cookie)=>{
 })
 }
 return(
-  <View style={styles.view}>
+  <View>
     <Header
                 backgroundColor="#7063ff"
                 leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
                 centerComponent={{ text: 'CERRAR SESIÓN', style: { color: '#fff',fontWeight:"bold" } }}
             />
+    <View style={styles.view}>
     <Button onPress={getData}>CERRAR SESIÓN</Button>
+    </View>
     </View>
 )
 }
@@ -61,8 +64,8 @@ const styles= StyleSheet.create({
   view:{
     flex:1,
     justifyContent: 'center',
-    marginHorizontal:20,
-    marginTop:90 
+    marginHorizontal:width/4,
+    marginTop:height/2.5,
   }
 })
 

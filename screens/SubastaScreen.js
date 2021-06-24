@@ -6,12 +6,11 @@ import {
   View
 } from "react-native";
 import { Block,Card, Checkbox, Text, theme,Input,Button,DeckSwiper} from "galio-framework";
-
-import Carrousel from "../components/carrousel"
 import Carrusel from "../components/carrusel"
 import AppLoading from 'expo-app-loading';
 const { width } = Dimensions.get('screen');
 import Reloj from '../components/reloj'
+
 
 
 

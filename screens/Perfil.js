@@ -17,41 +17,34 @@ const { width, height } = Dimensions.get("screen");
 
 export default function Perfil (props) {
   const { checkSession } = React.useContext(AuthContext);
+
   const valor=checkSession()
+
   if (valor===false){
-    return(
-        <View >
-                <Header
-        backgroundColor="#7063ff"
-        leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
-        centerComponent={{ text: 'PERIFL', style: { color: '#fff' } }}
-    />
-        <Text center style={{marginTop:300}}>Necesita Iniciar Sesión Para Accerder a Esta Función</Text>
-        </View>
-    );
-  }
-    else{
       return(
-        <View>
-           <Header
+          <View >
+              <Header
+      backgroundColor="#7063ff"
+      leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
+      centerComponent={{ text: 'SUBASTAR ARTICULO', style: { color: '#fff' } }}
+  />
+          <Text center style={{marginTop:300}}>Necesita Iniciar Sesión Para Accerder a Esta Función</Text>
+          </View>
+      );
+  }
+  else{
+
+  
+      return(
+        <ImageBackground source={fondo} style={styles.image}>
+        <Block flex middle>
+          <Header
            backgroundColor="#7063ff"
            leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
            centerComponent={{ text: 'PERFIL', style: { color: '#fff' } }}
        />
-           <Content/>
-       </View>
-       );
-    }
-  
-  }
-const Content=()=>{
-  return (
-    <ImageBackground source={fondo} style={styles.image}>
-    <Block flex middle>
         <Block safe flex middle>
-          <ScrollView>
           <Block style={styles.registerContainer}>
-            
             <Block flex>
               <Block flex={0.17} middle>
                 <Text bold color="#000000" size={22}>
@@ -147,7 +140,7 @@ const Content=()=>{
                     />
                   </Block>
                   <Block middle>
-                    <Button color="primary" style={styles.createButton} onPress={()=>this.props.navigation.navigate("Home")}>
+                    <Button color="primary" style={styles.createButton}>
                       <Text bold size={14} color= '#FFFFFF'>
                         ACEPTAR CAMBIOS
                       </Text>
@@ -157,14 +150,13 @@ const Content=()=>{
               </Block>
             </Block>
           </Block>
-          </ScrollView>
         </Block> 
     </Block>
-       
     </ImageBackground>
-  );
-}
-
+       );
+    }
+  }
+  
 const styles = StyleSheet.create({
   registerContainer: {
     width: width * 0.9,

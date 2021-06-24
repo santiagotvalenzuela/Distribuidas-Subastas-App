@@ -1,26 +1,53 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   StyleSheet,
   ScrollView,
   Dimensions,
-  View
+  View,
+  Image
 } from "react-native";
 import { Block,Card, Checkbox, Text, theme,Input,Button,DeckSwiper} from "galio-framework";
-import Carrusel from "../components/carrusel"
-import AppLoading from 'expo-app-loading';
+import { SliderBox } from "react-native-image-slider-box";
 const { width } = Dimensions.get('screen');
 
 
+
 export default function Subasta (){
-    renderArticles=()=>{
+  const [subastas,setSubs]=React.useState({});
+  
+
+  useEffect(()=>{
+    fetch('https://subastas-spring-backend.herokuapp.com/items/3', {
+        method:"GET",
+        mode: 'cors',
+        crossDomain:true,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        })
+        .then(response =>response.json())
+        .then(response => {if(response!=null){
+        setSubs(response)
+        }})
+        .catch(error=>{if(error){
+        console.log(error)
+        Alert.alert("ERROR")
+        }
+    })
+  },[]);
+
         return(
+        <Block flex center backgroundColor="#fff"> 
         <ScrollView showsVerticalScrollIndicator={false}>
+
             <View style={{height:20}}/>
             <Block>
-            <Text  center bold size={30} color="#000" >Macbook Air</Text>
-            </Block>
+            <Text  center bold size={30} color="#000" >{subastas.title}</Text>
             <View style={{height:20}}/>
-            <Carrusel center/>
+            </Block>
+            <Image style={styles.logo} source= {{uri:"https://res.cloudinary.com/dr4i78wvu/image/upload/v1624488419/initial/zapatilla_2.jpg",}}/>
+            <View style={{height:20}}/>
             <View style={{height:20}}/>
             <Text  center style={{fontSize:20}}>VALOR BASE: 4000$</Text>
             <View style={styles.sep}/>
@@ -28,22 +55,16 @@ export default function Subasta (){
             <Block style={styles.block}>
                 <Text center bold>DESCRIPCIÓN</Text>
                 <View style={{height:10}}/>
-                <Text style={styles.texto}>Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el contenido del texto de un sitio mientras que mira su diseño. El punto de usar Lorem Ipsum es que tiene una distribución más o menos normal de las letras, al contrario de usar textos como por ejemplo "Contenido aquí, contenido aquí".</Text>
+                <Text style={styles.texto}>{subastas.description}</Text>
                 <View style={{height:62}}/>
                 <Block middle>
                 </Block>
-                <View style={{height:90}}/>
+                <View style={{height:170}}/>
             </Block>
         </ScrollView>
+        </Block>
         )
         
-    }
-
-        return(
-            <Block flex center backgroundColor="#fff"> 
-            {this.renderArticles()}
-            </Block>
-        )
     }
 
 const styles = StyleSheet.create({
@@ -81,6 +102,11 @@ const styles = StyleSheet.create({
         width: width*0.9,  
         backgroundColor: "#b8b6ba",
         marginBottom:8,
-      }
+      },
+      logo: {
+        width: 370,
+        height: 200,
+        
+      },
       
 });
