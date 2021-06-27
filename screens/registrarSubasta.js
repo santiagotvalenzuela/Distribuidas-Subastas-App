@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {View,Image,StyleSheet,Dimensions,Platform,Alert,ActivityIndicator} from "react-native"
+import {View,Image,StyleSheet,Dimensions,Platform,Alert,SafeAreaView} from "react-native"
 import { Block, Checkbox, Text, theme,Input,Button } from "galio-framework";
 import { Icon,Header } from 'react-native-elements'
 import * as ImagePicker from 'expo-image-picker';
@@ -128,7 +128,7 @@ export default function registrarSubasta(props){
         })
     }
         return(
-            <View >
+            <SafeAreaView >
             <Block style={styles.block}>
                 <Input
                 style={{borderColor:theme.COLORS.INFO}}
@@ -158,7 +158,7 @@ export default function registrarSubasta(props){
             <Button style={styles.button} onPress={cloudinaryUpload}>Agregar Imagen</Button>
             <View style={{height:10}}/>
             <Button color="info" style={styles.button2} onPress={cargarSubasta}>REGISTRAR ARTICULO</Button>
-            </View>
+            </SafeAreaView>
 
         )
     }

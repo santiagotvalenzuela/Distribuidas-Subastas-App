@@ -9,15 +9,18 @@ import {
 import { Block,Card, Checkbox, Text, theme,Input,Button,DeckSwiper} from "galio-framework";
 import { SliderBox } from "react-native-image-slider-box";
 const { width } = Dimensions.get('screen');
-
+import { AuthContext } from "../middleware/context";
 
 
 export default function Subasta (){
-  const [subastas,setSubs]=React.useState({});
+  const [subastas,setSubs] = React.useState([]);
+  const [images,setImages] = React.useState([])
+  const { checkId } = React.useContext(AuthContext);
   
 
   useEffect(()=>{
-    fetch('https://subastas-spring-backend.herokuapp.com/items/3', {
+    let id = checkId();
+    fetch('https://subastas-spring-backend.herokuapp.com/items/'+id, {
         method:"GET",
         mode: 'cors',
         crossDomain:true,
@@ -29,6 +32,7 @@ export default function Subasta (){
         .then(response =>response.json())
         .then(response => {if(response!=null){
         setSubs(response)
+        setImages(images.concat(response.image_urls))
         }})
         .catch(error=>{if(error){
         console.log(error)
@@ -36,20 +40,29 @@ export default function Subasta (){
         }
     })
   },[]);
+  const Carrusel=()=>{
+    return(
+    <SliderBox
+          images={images}
+          onCurrentImagePressed={index =>
+            console.warn(`image ${index} pressed`)
+          }
+        />
+    );
+  }
 
         return(
         <Block flex center backgroundColor="#fff"> 
         <ScrollView showsVerticalScrollIndicator={false}>
-
             <View style={{height:20}}/>
             <Block>
             <Text  center bold size={30} color="#000" >{subastas.title}</Text>
             <View style={{height:20}}/>
             </Block>
-            <Image style={styles.logo} source= {{uri:"https://res.cloudinary.com/dr4i78wvu/image/upload/v1624488419/initial/zapatilla_2.jpg",}}/>
+            <Carrusel/>
             <View style={{height:20}}/>
             <View style={{height:20}}/>
-            <Text  center style={{fontSize:20}}>VALOR BASE: 4000$</Text>
+            <Text  center style={{fontSize:20}}>VALOR BASE: ${subastas.basePrice}</Text>
             <View style={styles.sep}/>
             <View style={{height:20}}/>
             <Block style={styles.block}>

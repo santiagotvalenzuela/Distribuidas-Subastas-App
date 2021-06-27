@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   ImageBackground,
@@ -6,7 +6,7 @@ import {
   StatusBar,
   View,
   KeyboardAvoidingView,
-  ScrollView
+  Alert
 } from "react-native";
 import { Block, Checkbox, Text, theme,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
@@ -17,8 +17,59 @@ const { width, height } = Dimensions.get("screen");
 
 export default function Perfil (props) {
   const { checkSession } = React.useContext(AuthContext);
-
+  const { checkUser } = React.useContext(AuthContext);
+  const [perfil,setPerfil] = React.useState([])
   const valor=checkSession()
+  const [pass, setPass] = React.useState('');
+  const [tel, setTel] = React.useState('');
+  const [add, setAdd] = React.useState('');
+
+  useEffect(()=>{
+    let id= checkUser();
+    fetch('https://subastas-spring-backend.herokuapp.com/users/'+id,{
+      method:"GET",
+      mode: 'cors',
+      crossDomain:true,
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      })
+      .then(response =>response.json())
+      .then(response => {if(response!=null){
+      setPerfil(response)
+      }})
+      .catch(error=>{if(error){
+      console.log(error)
+      Alert.alert("ERROR")
+      }
+  })
+},[]);
+
+const modify=()=>{
+  let id= checkUser();
+  fetch('https://subastas-spring-backend.herokuapp.com/users/'+id,{
+    method:"PUT",
+    mode: 'cors',
+    crossDomain:true,
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    credentials: 'same-origin',
+    body:JSON.stringify({
+      "address":add,
+      "password":pass,
+      "phone":tel
+    })
+   })
+    .then(response =>response.json())
+    .then(res=>console.log(res),Alert.alert("CAMBIOS EFECTUADOS SATISFACORIAMENTE!"))
+    .catch(error=>{if(error){
+    console.log(error)
+    Alert.alert("ERROR")
+    }
+})
+}
 
   if (valor===false){
       return(
@@ -26,7 +77,7 @@ export default function Perfil (props) {
               <Header
       backgroundColor="#7063ff"
       leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
-      centerComponent={{ text: 'SUBASTAR ARTICULO', style: { color: '#fff' } }}
+      centerComponent={{ text: 'PERFIL', style: { color: '#fff' } }}
   />
           <Text center style={{marginTop:300}}>Necesita Iniciar Sesión Para Accerder a Esta Función</Text>
           </View>
@@ -57,39 +108,34 @@ export default function Perfil (props) {
                   behavior="padding"
                   enabled="false"
                 >
-                  <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                    <Input
+                  <Block width={width * 0.8} style={{ marginBottom: 20,marginLeft:5 }}>
+                    <Text
                       borderless
-                      placeholder="Nombre y Apellido"
-                      placeholderTextColor="grey"
-                      iconContent={
-                          <Icon
-                              name='edit'
-                              style={styles.inputIcons}
-                          />
-                      }
-                    />
+                      color="grey"
+                      bold
+                    >Nombre de Usuario</Text>
+                    <Text bold center style={{marginTop:10,fontSize:17}}>{perfil.username}</Text>
                   </Block>
-                  <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                    <Input
-                      borderless
-                      placeholder="Email"
-                      placeholderTextColor="grey"
-                      type="email-address"
-                      iconContent={
-                          <Icon
-                              name='edit'
-                              style={styles.inputIcons}
-                          />
-                      }
-                    />
+                  <Block width={width * 0.8} style={{ marginBottom: 17,marginLeft:5 }}>
+                    <Text
+                      color="grey"
+                      bold
+                    >Email</Text>
+                    <Text bold center style={{marginTop:10,fontSize:17}}>{perfil.mail}</Text>
+                  </Block>
+                  <Block width={width * 0.8} style={{ marginBottom: 17,marginLeft:5 }}>
+                    <Text color="grey" bold
+                    >Categoría</Text>
+                    <Text bold center style={{marginTop:10,fontSize:17}}>{perfil.category}</Text>
                   </Block>
                   <Block width={width * 0.8}>
                     <Input
                       borderless
-                      placeholder="Documento"
+                      placeholder={"Telefono | "+perfil.phone}
                       placeholderTextColor="grey"
                       type="number-pad"
+                      onChangeText={tel=>setTel(tel)}
+                      defaultValue={tel}
                       iconContent={
                           <Icon
                               name='edit'
@@ -101,9 +147,10 @@ export default function Perfil (props) {
                   <Block width={width * 0.8}>
                     <Input
                       borderless
-                      placeholder="Telefono"
+                      placeholder={"Dirección | "+perfil.address}
                       placeholderTextColor="grey"
-                      type="number-pad"
+                      onChangeText={add=>setAdd(add)}
+                      defaultValue={add}
                       iconContent={
                           <Icon
                               name='edit'
@@ -114,9 +161,12 @@ export default function Perfil (props) {
                   </Block>
                   <Block width={width * 0.8}>
                     <Input
+                      password
                       borderless
-                      placeholder="Domicilio"
+                      placeholder="Password"
                       placeholderTextColor="grey"
+                      onChangeText={pass=>setPass(pass)}
+                      defaultValue={pass}
                       iconContent={
                           <Icon
                               name='edit'
@@ -140,7 +190,7 @@ export default function Perfil (props) {
                     />
                   </Block>
                   <Block middle>
-                    <Button color="primary" style={styles.createButton}>
+                    <Button color="primary" style={styles.createButton} onPress={modify}>
                       <Text bold size={14} color= '#FFFFFF'>
                         ACEPTAR CAMBIOS
                       </Text>

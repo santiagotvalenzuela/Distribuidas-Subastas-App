@@ -1,72 +1,83 @@
-import React from 'react';
-import { StyleSheet, Dimensions, ScrollView,View,TouchableOpacity } from 'react-native';
+import React,{useEffect} from 'react';
+import { StyleSheet, Dimensions, SafeAreaView,FlatList,View,TouchableOpacity } from 'react-native';
 import { Block, theme,Text,Button } from 'galio-framework';
-import { Header,Icon } from 'react-native-elements'
 import { Card } from 'galio-framework';
-import tag from "../assets/Label-256.png"
+import { AuthContext } from "../middleware/context";
 const { width } = Dimensions.get('screen');
 
-class articulos extends React.Component {
-  renderArticles = () => {
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.articles}>
-        <Block flex>
-            <Card
-                flex
-                borderless
-                caption="Nuevo"
-                style={styles.card}
-                title="Record Player Logitech"
-                location="135$"
-                avatar='https://pngimg.com/uploads/price_label/price_label_PNG77.png'
-                imageStyle={styles.cardImageRadius}
-                imageBlockStyle={{ padding: theme.SIZES.BASE / 2 }}
-                image="https://www.chartattack.com/wp-content/uploads/2019/10/record-1024x1024.jpg"
-                />
-            <View style={{height:20}}/>
-          <Block flex >
-            <Card
-            flex
-            borderless
-            caption="Usado"
-            imageStyle={styles.cardImageRadius}
-            title= "Macbook Air"
-            location="555$"
-            avatar="https://pngimg.com/uploads/price_label/price_label_PNG77.png"
-            description="Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom."
-            image="https://images.idgesg.net/images/article/2018/11/macbook-air-2108-hero2-100779122-orig.jpeg"
-            
-            />
-          </Block>
-          <View style={{height:20}}/>
-          <Block flex>
-          <Card 
-            flex
-            borderless
-            caption="Nuevo"
-            title= "Producto 2"
-            avatar="https://pngimg.com/uploads/price_label/price_label_PNG77.png"
-            location="50$"
-            description="Rock music is a genre of popular music. It developed during and after the 1960s in the United Kingdom."
-            image="https://2.bp.blogspot.com/-EnCq4Hh_7uA/UPbT8vU_guI/AAAAAAAAE2Q/aP0SQYVo6PE/s1600/sILVER.jpg"
-            />
-            </Block>
-        </Block>
-      </ScrollView>
-    )
-  }
+function SubastasLista (props) {
+  const { checkSession } = React.useContext(AuthContext);
+  const { setId } = React.useContext(AuthContext);
+  const { checkId } = React.useContext(AuthContext);
+  const valor=checkSession()
+  const [subastas,setSubs]=React.useState([]);
+  
+  
+  useEffect(()=>{
+    let id=checkId()
+    fetch('https://subastas-spring-backend.herokuapp.com/auctions/'+id+'/items', {
+        method:"GET",
+        mode: 'cors',
+        crossDomain:true,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        })
+        .then(response =>response.json())
+        .then(response => {if(response!=null){
+        setSubs(subastas.concat(response))
+        }})
+        .catch(error=>{if(error){
+        console.log(error)
+        Alert.alert("ERROR")
+        }
+    })
+  },[]);
 
-  render() {
     return (
       <Block flex center style={styles.home}>  
-        {this.renderArticles()}
+        <SafeAreaView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.articles}>
+        <View style={styles.sep}/>
+        <Block flex>
+        <FlatList
+                ItemSeparatorComponent={
+                  Platform.OS !== 'android' &&
+                  (({ highlighted }) => (
+                    <View
+                      style={[
+                        styles.separator,
+                        highlighted && { marginLeft: 0 }
+                      ]}
+                    />
+                  ))
+                }
+                data={subastas}
+                renderItem={({ item, index, separators }) => (
+                    <Card
+                        flex
+                        key={item.id}
+                        borderless
+                        caption={item.description}
+                        style={styles.card}
+                        title={item.title}
+                        avatar='https://pngimg.com/uploads/price_label/price_label_PNG77.png'
+                        imageStyle={styles.cardImageRadius}
+                        imageBlockStyle={{ padding: theme.SIZES.BASE / 2 }}
+                        image={item.image_urls.reduce((object)=>{return `${object}`})}
+                        />
+                )}
+                />
+                <View style={{height:20}}/>
+        </Block>
+      </SafeAreaView>
       </Block>
       
     );
   }
-}
+
 
 const styles = StyleSheet.create({
   home: {
@@ -89,4 +100,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default articulos;
+export default SubastasLista;

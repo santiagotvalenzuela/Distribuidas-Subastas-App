@@ -39,6 +39,7 @@ export function navigate(name) {
 export default function App() {
   const [session, SetSession] = React.useState(false)
   const [id,setID]=React.useState('')
+  const [userId,setUserID]=React.useState('')
 
  const authContext = React.useMemo(()=>({
       signIn: ()=>{
@@ -52,7 +53,15 @@ export default function App() {
       },
       setId:(value)=>{
         setID(value)
+      },
+      checkId:()=>{
         return id;
+      },
+      setUserId:(value)=>{
+        setUserID(value)
+      },
+      checkUser:()=>{
+        return userId;
       }
  }))
   return (

@@ -21,6 +21,7 @@ export default function Login (props) {
   const [user, setText] = React.useState('');
   const [pass, setText2] = React.useState('');
   const { signIn } = React.useContext(AuthContext);
+  const { setUserId } = React.useContext(AuthContext);
 
   const login=async()=>{
     fetch('https://subastas-spring-backend.herokuapp.com/login', {
@@ -40,8 +41,9 @@ export default function Login (props) {
     .then(response =>response.json())
     .then(result => {if(result!=null){
       console.log(result)
-      storeData(result.userInformation.username,result.session)
+      storeData(result.user.username,result.session)
       signIn()
+      setUserId(result.user.user_id)
       props.navigation.navigate("Home")
     }})
     .catch(error=>{if(error){
