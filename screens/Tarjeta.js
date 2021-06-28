@@ -6,17 +6,60 @@ import {
   StatusBar,
   View,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import { Block, Checkbox, Text, theme,Input,Button,ScrollView } from "galio-framework";
 import fondo from "../assets/wallApp.png";
 import { Icon,Header } from 'react-native-elements'
-import Picker from "../components/picker2"
+import DropDownPicker from 'react-native-dropdown-picker';
+import { AuthContext } from "../middleware/context";
 
 
 const { width, height } = Dimensions.get("screen");
 
-export default class Tarjeta extends React.Component {
-  render(){
+export default function Tarjeta () {
+  const { checkUser } = React.useContext(AuthContext);
+  const [nro,setNro] = React.useState('');
+  const [cod,setCod] = React.useState('');
+  const [fecha,setFecha] = React.useState('');
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(null);
+  const [items, setItems] = React.useState([
+    {label: 'Visa', value: 'Visa'},
+    {label: 'MasterCard', value: 'MasterCard'},
+    {label: 'American', value: 'American'}
+  ])
+
+
+  const CargarDatos=()=>{
+    let id= checkUser();
+    fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/payments',{
+      method:"POST",
+      mode: 'cors',
+      crossDomain:true,
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({
+        "name":value,
+        "type":"CREDIT_CARD",
+        "data":{
+          "primeros_4":cod,
+          "ultimos_6":nro,
+          "fecha_vencimiento":fecha,
+        }
+      }),
+      credentials: 'same-origin',
+      })
+      .then(response =>response.json())
+      .then(res=>console.log(res))
+      .then(Alert.alert('Datos Cargados Correctamente!'))
+      .catch(error=>{if(error){
+      console.log(error)
+      Alert.alert("ERROR")
+      }
+  })
+  }
     return (
       <ImageBackground source={fondo} style={styles.image}>
       <Block flex middle>
@@ -30,7 +73,16 @@ export default class Tarjeta extends React.Component {
                     Tarjeta
                   </Text>
                   <View style={{height:20}}/>
-                  <Picker center/>
+                  <DropDownPicker
+                      center
+                      open={open}
+                      value={value}
+                      items={items}
+                      setOpen={setOpen}
+                      setValue={setValue}
+                      setItems={setItems}
+                      containerStyle={{height: 40,width:300}}
+                  />
                 </Block>
                 <View style={{height:20}}/>
                 
@@ -46,6 +98,8 @@ export default class Tarjeta extends React.Component {
                         placeholder="Nro de Tarjeta"
                         placeholderTextColor="grey"
                         type="number-pad"
+                        onChangeText={nro=>setNro(nro)}
+                        defaultValue={nro}
                         iconContent={
                             <Icon
                                 name='edit'
@@ -59,6 +113,8 @@ export default class Tarjeta extends React.Component {
                         borderless
                         placeholder="Vencimiento"
                         placeholderTextColor="grey"
+                        onChangeText={fecha=>setFecha(fecha)}
+                        defaultValue={fecha}
                         iconContent={
                             <Icon
                                 name='edit'
@@ -74,6 +130,8 @@ export default class Tarjeta extends React.Component {
                         placeholder="Código de Seguridad"
                         placeholderTextColor="grey"
                         type="number-pad"
+                        onChangeText={cod=>setCod(cod)}
+                        defaultValue={cod}
                         iconContent={
                             <Icon
                                 name='edit'
@@ -83,7 +141,7 @@ export default class Tarjeta extends React.Component {
                       />
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton} onPress={()=>this.props.navigation.navigate("Home")}>
+                      <Button color="primary" style={styles.createButton} onPress={CargarDatos}>
                         <Text bold size={14} color= '#FFFFFF'>
                           ACEPTAR CAMBIOS
                         </Text>
@@ -99,7 +157,6 @@ export default class Tarjeta extends React.Component {
       </ImageBackground>
     );
   }
-}
 
 const styles = StyleSheet.create({
   registerContainer: {

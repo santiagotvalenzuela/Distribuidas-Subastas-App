@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SafeAreaView, View,Button, FlatList, StyleSheet, Text, StatusBar, Image,TouchableHighlight,ScrollView } from 'react-native';
+import { SafeAreaView, View,Button, FlatList, StyleSheet, Text, ActivityIndicator, Image,TouchableHighlight } from 'react-native';
 import { Icon,Header } from 'react-native-elements'
 import Label from "../assets/Label-256.png"
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,6 +8,7 @@ import { AuthContext } from "../middleware/context";
 export default function Home (props){
   const { setId } = React.useContext(AuthContext);
   const [subastas,setSubs]=React.useState([]);
+  const [isLoading,setIsLoading] = React.useState(true)
 
   useEffect(()=>{
     fetch('https://subastas-spring-backend.herokuapp.com/auctions', {
@@ -23,6 +24,7 @@ export default function Home (props){
         .then(response => {if(response!=null){
         //console.log(response)
         setSubs(subastas.concat(response))
+        setIsLoading(false)
         }})
         .catch(error=>{if(error){
         console.log(error)
@@ -35,6 +37,19 @@ export default function Home (props){
     setId(key)
     props.navigation.navigate("Subasta")
   }
+  if(isLoading){
+    return(
+      <View>
+        <Header
+                backgroundColor="#7063ff"
+                leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
+                centerComponent={{ text: 'SUBASTAS', style: { color: '#fff',fontWeight:"bold" } }}
+            />
+        <ActivityIndicator size="large" color="#7063ff" style={{marginTop:250}}/>
+      </View>
+    )
+  }
+  else{
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -72,6 +87,7 @@ export default function Home (props){
               />
             </SafeAreaView>
   )
+}
 }
 
 const styles = StyleSheet.create({

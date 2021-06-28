@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react';
-import { StyleSheet, Dimensions, ScrollView,View,TouchableOpacity,FlatList } from 'react-native';
+import { StyleSheet, Dimensions, ScrollView,View,TouchableOpacity,FlatList,Alert } from 'react-native';
 import { Block, theme,Text,Button } from 'galio-framework';
 import { Header,Icon } from 'react-native-elements'
 import { Card } from 'galio-framework';
@@ -62,6 +62,7 @@ function SubastasLista (props) {
       credentials: 'same-origin',
       })
       .then(response =>console.log(response.status))
+      .then(Alert.alert("Participación Solicitada!"))
       .catch(error=>{if(error){
         console.log(error)
         Alert.alert("Error")

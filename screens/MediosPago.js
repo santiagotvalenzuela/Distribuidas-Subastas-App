@@ -14,7 +14,7 @@ export default function  Medios (props){
                 <Header
                     backgroundColor="#7063ff"
                     leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
-                    centerComponent={{ text:'HISTORIAL', style: { color: '#fff' } }}
+                    centerComponent={{ text:'MEDIOS DE PAGO', style: { color: '#fff' } }}
                 />
              <Text center style={{marginTop:300}}>Necesita Iniciar Sesión Para Accerder a Esta Función</Text>
       </View>

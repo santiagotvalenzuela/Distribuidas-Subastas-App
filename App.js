@@ -122,7 +122,6 @@ const SubastaStack =()=>{
   <Sub.Navigator>
     <Sub.Screen name="Home" component={Home} options={{headerShown:false}}/>
     <Sub.Screen name="MuestraArticulo" component={MuestraArticulo} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-    <Sub.Screen name="Historial" component={histSubasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
     <Sub.Screen name="Subasta" component={ListaSub} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
   </Sub.Navigator>
   )
@@ -151,7 +150,8 @@ const MisStack=()=>{
     <MisSubs.Navigator>
       <MisSubs.Screen name="MisSubastas" component={MisSubastas} options={{headerShown:false}}/>
       <MisSubs.Screen name="SubastaScreen" component={Subasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
-      <Sub.Screen name="PUJA" component={PujaScreen} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+      <MisSubs.Screen name="PUJA" component={PujaScreen} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
+      <MisSubs.Screen name="Historial" component={histSubasta} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
       <MisSubs.Screen name="Participación" component={participar} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
       <MisSubs.Screen name="verArticulos" component={verArticulos} options={{headerStyle: {backgroundColor: '#7063ff'},headerTintColor:"white"}}/>
     </MisSubs.Navigator>

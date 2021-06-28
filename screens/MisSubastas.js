@@ -13,6 +13,8 @@ export default function misSubastas(props){
   const [subastas,setSubs]=React.useState([]);
   const {checkUser} = React.useContext(AuthContext)
   const [refreshing, setRefreshing] = React.useState(false);
+  const { checkSession } = React.useContext(AuthContext);
+
 
   useEffect(()=>{
     let id = checkUser()
@@ -64,6 +66,21 @@ export default function misSubastas(props){
     setId(key)
     props.navigation.navigate("Participación")
   }
+  const valor=checkSession()
+
+        if (valor===false){
+            return(
+                <View >
+                    <Header
+            backgroundColor="#7063ff"
+            leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
+            centerComponent={{ text: 'SUBASTAR ARTICULO', style: { color: '#fff' } }}
+        />
+                <Text center style={{marginTop:300, marginLeft:10}}>Necesita Iniciar Sesión Para Accerder a Esta Función</Text>
+                </View>
+            );
+        }
+        else{
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -102,6 +119,7 @@ export default function misSubastas(props){
               />
             </SafeAreaView>
   )
+}
 }
 
 const styles = StyleSheet.create({

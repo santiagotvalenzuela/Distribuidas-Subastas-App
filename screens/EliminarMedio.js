@@ -1,29 +1,86 @@
-import React from "react"
-import {View,StyleSheet,ImageBackground,Dimensions} from "react-native"
+import React,{useEffect} from "react"
+import {View,StyleSheet,ImageBackground,Dimensions,FlatList,TouchableOpacity,Alert} from "react-native"
 import {Block,theme,Text} from "galio-framework"
 import {Icon} from "react-native-elements"
 const { width, height } = Dimensions.get("screen");
 import fondo from "../assets/wallApp.png";
+import { AuthContext } from "../middleware/context";
+
 
 export default function EliminarMedio(){
+    const { checkUser } = React.useContext(AuthContext);
+    const [medios,setMedios] = React.useState([]);
+
+    useEffect(()=>{
+        let id= checkUser();
+        fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/payments',{
+          method:"GET",
+          mode: 'cors',
+          crossDomain:true,
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          credentials: 'same-origin',
+          })
+          .then(response =>response.json())
+          .then(response => {if(response!=null){
+          setMedios(response)
+          }})
+          .catch(error=>{if(error){
+          console.log(error)
+          Alert.alert("ERROR")
+          }
+      })
+    },[]);
+    
+    const Eliminar=(cod)=>{
+        let id= checkUser();
+        fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/payments/'+cod,{
+          method:"DELETE",
+          mode: 'cors',
+          crossDomain:true,
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          credentials: 'same-origin',
+          })
+          .then(Alert.alert("Medio Eliminado"))
+          .catch(error=>{if(error){
+          console.log(error)
+          Alert.alert("ERROR")
+          }
+      })
+    } 
         return(
             <ImageBackground source={fondo} style={styles.image}>
             <Block safe flex middle>
                 <Block style={styles.registerContainer}>
+                <FlatList
+                ItemSeparatorComponent={
+                  Platform.OS !== 'android' &&
+                  (({ highlighted }) => (
+                    <View
+                      style={[
+                        styles.separator,
+                        highlighted && { marginLeft: 0 }
+                      ]}
+                    />
+                  ))
+                }
+                data={medios}
+                renderItem={({ item, index, separators }) => (
                     <Block style={styles.block}>
-                        <Text p center bold>VISA</Text>
-                        <Text p center>nro: 432423123</Text>
-                        <Text p center>código de seguridad: ***</Text>
+                        <Text p center bold>{item.type}</Text>
+                        <Text p center>{item.name}</Text>
+                        <Text p center>Nro:{item.data.ultimos_6}</Text>
                         <View style={{height:5}}/>
-                        <Icon name='delete' color="#e31212" style={styles.inputIcons}/>
+                        <TouchableOpacity onPress={()=>Eliminar(item.id)}>
+                            <Icon name='delete' color="#e31212" style={styles.inputIcons} />
+                        </TouchableOpacity>
                     </Block>
-                    <Block style={styles.block}>
-                        <Text p center bold>CBU</Text>
-                        <Text p center>Alias:EJEMPLO.ARS</Text>
-                        <Text p center>nro: 32122132332112</Text>
-                        <View style={{height:5}}/>
-                        <Icon name='delete' color="#e31212" style={styles.inputIcons}/>
-                    </Block>
+                )}
+              />
+                    
                 </Block>
             </Block>
             </ImageBackground>

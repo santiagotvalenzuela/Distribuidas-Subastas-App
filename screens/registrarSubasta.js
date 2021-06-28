@@ -120,6 +120,7 @@ export default function registrarSubasta(props){
             .then(response =>response.json())
             .then(result => {if(result!=null){
             console.log(result)
+            Alert.alert("Subasta Cargada!")
             }})
             .catch(error=>{if(error){
             console.log(error)

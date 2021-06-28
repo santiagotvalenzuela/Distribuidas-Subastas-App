@@ -5,16 +5,49 @@ import {
   Dimensions,
   StatusBar,
   KeyboardAvoidingView,
+  Alert
 } from "react-native";
 import { Block, Checkbox, Text, theme,Input,Button,ScrollView } from "galio-framework";
 import fondo from "../assets/wallApp.png";
 import { Icon,Header } from 'react-native-elements'
-
+import { AuthContext } from "../middleware/context";
 
 const { width, height } = Dimensions.get("screen");
 
-export default class CBU extends React.Component {
-  render(){
+export default function CBU (){
+  const { checkUser } = React.useContext(AuthContext);
+  const [nro,setNro] = React.useState('');
+  const [name,setName] = React.useState('');
+
+
+  const CargarDatos=()=>{
+    let id= checkUser();
+    fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/payments',{
+      method:"POST",
+      mode: 'cors',
+      crossDomain:true,
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({
+        "name":name,
+        "type":"CBU",
+        "data":{
+          "ultimos_6":nro,
+        }
+      }),
+      credentials: 'same-origin',
+      })
+      .then(response =>response.json())
+      .then(res=>console.log(res))
+      .then(Alert.alert('Datos Cargados Correctamente!'))
+      .catch(error=>{if(error){
+      console.log(error)
+      Alert.alert("ERROR")
+      }
+  })
+  }
+
     return (
       <ImageBackground source={fondo} style={styles.image}>
       <Block flex middle>
@@ -38,6 +71,8 @@ export default class CBU extends React.Component {
                         borderless
                         placeholder="Alias"
                         placeholderTextColor="grey"
+                        onChangeText={name=>setName(name)}
+                        defaultValue={name}
                         iconContent={
                             <Icon
                                 name='edit'
@@ -52,6 +87,8 @@ export default class CBU extends React.Component {
                         placeholder="Nro de CBU"
                         type="number-pad"
                         placeholderTextColor="grey"
+                        onChangeText={nro=>setNro(nro)}
+                        defaultValue={nro}
                         iconContent={
                             <Icon
                                 name='edit'
@@ -61,7 +98,7 @@ export default class CBU extends React.Component {
                       />
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton} onPress={()=>this.props.navigation.navigate("Home")}>
+                      <Button color="primary" style={styles.createButton} onPress={CargarDatos}>
                         <Text bold size={14} color= '#FFFFFF'>
                           ACEPTAR CAMBIOS
                         </Text>
@@ -76,7 +113,6 @@ export default class CBU extends React.Component {
          
       </ImageBackground>
     );
-  }
 }
 
 const styles = StyleSheet.create({
