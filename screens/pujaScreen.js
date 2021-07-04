@@ -1,58 +1,155 @@
-import React,{useState} from "react";
+import React,{useEffect,useState} from "react";
 import {
   StyleSheet,
   ScrollView,
   Dimensions,
-  View
+  View,
+  Alert
 } from "react-native";
-import { Block, Text, theme,Button} from "galio-framework";
-import Picker from "../components/picker"
+import { Block, Text, theme,Button,Icon,Input} from "galio-framework";
+import DropDownPicker from 'react-native-dropdown-picker';
 const { width } = Dimensions.get('screen');
-import Reloj from '../components/reloj'
+import { AuthContext } from "../middleware/context";
 import { SafeAreaView } from "react-native";
 
 
 export default function Subasta (){
+  const { checkId } = React.useContext(AuthContext);
+  const [subastas,setSubs]=React.useState([]);
+  const { checkUser } = React.useContext(AuthContext);
+  const [medios,setMedios] = React.useState([]);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [puja, setPuja] = useState(null);
 
+
+
+  useEffect(()=>{
+    let id=checkId()
+    fetch('https://subastas-spring-backend.herokuapp.com/auctions/'+id+'/items', {
+        method:"GET",
+        mode: 'cors',
+        crossDomain:true,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        })
+        .then(response =>response.json())
+        .then(response => {if(response!=null){
+        setSubs(subastas.concat(response))
+        
+        }})
+        .catch(error=>{if(error){
+        console.log(error)
+        Alert.alert("ERROR")
+        }
+    })
+    let id2= checkUser();
+        fetch('https://subastas-spring-backend.herokuapp.com/users/'+id2+'/payments',{
+          method:"GET",
+          mode: 'cors',
+          crossDomain:true,
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          credentials: 'same-origin',
+          })
+          .then(response =>response.json())
+          .then(response => {if(response!=null){
+          setMedios(response)
+          }})
+          .catch(error=>{if(error){
+          console.log(error)
+          Alert.alert("ERROR")
+          }
+      })
+  },[]);
+
+    function prueba(){
+      console.log(value)
+
+    }
+    const Puja=(id)=>{
+      fetch('https://subastas-spring-backend.herokuapp.com/items/'+id+'/bids',{
+        method:"POST",
+        mode: 'cors',
+        crossDomain:true,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        body:JSON.stringify({
+          "bid":puja
+        })
+        })
+        .then(response =>response.json())
+        .then(response => {if (response.status==="ACTIVE"){
+          Alert.alert("Puja Realizada")
+        }
+        else{
+          Alert.alert("Monto No Suficiente")
+        }})
+        .catch(error=>{if(error){
+        console.log(error)
+        Alert.alert("ERROR")
+        }
+    })
+    }
+  
       return(
-            <Block flex center backgroundColor="#fff"> 
+            <Block flex center backgroundColor="#fff">
+        {subastas.map((object)=>{if(object.status==="ACTIVE"){
+          return(
         <SafeAreaView showsVerticalScrollIndicator={false}>
-            <View style={{height:20}}/>
             <Block style={styles.home}>
-            <Text   style={styles.texto} >Macbook Air</Text>
-            <Text   style={styles.texto} >ID: 04</Text>
+            <Text   style={styles.texto} >{object.title}</Text>
+            <Text   style={styles.texto} >ID: {object.id}</Text>
             </Block>
-            <View style={{height:20}}/>
-            <Text  center style={{fontSize:20}}>VALOR ACTUAL: 4500$</Text>
-            <View style={{height:20}}/>
-            <Text  center bold style={{fontSize:20}}>TIEMPO RESTANTE</Text>
-            <Reloj/>
-            <View style={{height:10}}/>
+            <Text  center bold style={{fontSize:20,marginTop:20}}>VALOR ACTUAL: ${object.currentPrice}</Text>
+
+            <Input style={{width:300,marginHorizontal:28,borderColor:theme.COLORS.INFO}}
+             placeholder="Ingrese Valor A Pujar" 
+             type="number-pad"  
+             placeholderTextColor="grey"
+             icon="credit"
+             family="Entypo"
+             onChangeText={puja=>setPuja(puja)}
+             defaultValue={puja}
+             />
+             
             <View style={styles.sep}/>
-            <Text  center bold style={{fontSize:20}}>Elegir Medio de Pago</Text>
-            <View style={{height:4}}/>
+            <Text  center bold style={{fontSize:20,marginBottom:1}}>Elegir Medio de Pago</Text>  
             <Block flex middle>
-              <Picker/>
+            <DropDownPicker
+              open={open}
+              itemKey="value"
+              items={medios.map((object)=>({label: object.name,value:object.id}))}
+              value={value}
+              setOpen={setOpen}
+              setValue={setValue}
+              containerStyle={{height: 40,width:300}}
+          />
             </Block>
-            <View style={{height:50}}/>
             <Block style={styles.block}>
                 <Block middle>
-                <Button color="#8e38ff" style={styles.createButton}>
+                <Button color="#8e38ff" style={styles.createButton} onPress={()=>Puja(object.id)}>
                     <Text color="#fff">PUJAR</Text>
                 </Button>
                 </Block>
-                <View style={{height:100}}/>
             </Block>
         </SafeAreaView>
+          )}})}
             </Block>
         )
-    }
+      }
 
 
 const styles = StyleSheet.create({
     home: {
         width: width,
         flex:1,
+        marginTop:20,
       },
     image: {
         flex: 1,
@@ -67,6 +164,8 @@ const styles = StyleSheet.create({
         backgroundColor:"#ededed",
         borderTopLeftRadius: theme.SIZES.BASE * 2,
         borderTopRightRadius: theme.SIZES.BASE * 2,
+        marginTop:50,
+        height:170,
       },
       createButton: {
         width: width * 0.5,
@@ -85,6 +184,7 @@ const styles = StyleSheet.create({
         width: width*0.8,  
         backgroundColor: "#b8b6ba",
         marginBottom:20,
+        marginTop:10,
       }
       
 });

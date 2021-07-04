@@ -72,7 +72,7 @@ export default function Home (props){
                 data={subastas}
                 renderItem={({ item, index, separators }) => (
                   <TouchableHighlight
-                    key={item.id}
+                    key={index.toString()}
                     onPress={() =>nav(item.id)}
                     onShowUnderlay={separators.highlight}
                     onHideUnderlay={separators.unhighlight}>

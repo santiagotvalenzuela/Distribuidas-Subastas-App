@@ -1,13 +1,17 @@
-
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet,Text,View, TouchableHighlight } from 'react-native';
 import CountDown from 'react-native-countdown-component';
 
-export default class Reloj extends React.Component{
-    render() {
+export default function Reloj (props){
+    let date = new Date(props.valor + "Z");
+    let val= new Date(Date.now())
+    //let fecha = new Date(date.getTime()+(date.getTimezoneOffset()-10850000))
+    let diff = new Date(date.getTime()-val.getTime());// probar con la variable date
+    console.log(diff)
+    
         return (
         <CountDown
-            until={60 * 10 + 30}
+            until={diff.getMinutes()*60+(diff.getSeconds())}
             size={30}
             onFinish={() => alert('Finished')}
             digitStyle={{backgroundColor: '#FFF'}}
@@ -16,5 +20,4 @@ export default class Reloj extends React.Component{
             timeLabels={{m: 'MM', s: 'SS'}}
         />
         )
-    }
 }

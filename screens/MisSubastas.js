@@ -58,7 +58,7 @@ export default function misSubastas(props){
           //console.log(response)
           setSubs(subastas.concat(response))
           }})
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, []);
 
   
