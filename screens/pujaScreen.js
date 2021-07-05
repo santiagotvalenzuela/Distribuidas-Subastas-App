@@ -71,6 +71,7 @@ export default function Subasta (){
 
     }
     const Puja=(id)=>{
+      if(value!=null){
       fetch('https://subastas-spring-backend.herokuapp.com/items/'+id+'/bids',{
         method:"POST",
         mode: 'cors',
@@ -80,7 +81,8 @@ export default function Subasta (){
         },
         credentials: 'same-origin',
         body:JSON.stringify({
-          "bid":puja
+          "bid":puja,
+          "payment_method":value
         })
         })
         .then(response =>response.json())
@@ -88,13 +90,17 @@ export default function Subasta (){
           Alert.alert("Puja Realizada")
         }
         else{
-          Alert.alert("Monto No Suficiente")
+          Alert.alert("Monto Insuficiente o Demasiado Alto")
         }})
         .catch(error=>{if(error){
         console.log(error)
         Alert.alert("ERROR")
         }
     })
+  }
+  else{
+    Alert.alert("Debe Elegir Un Método de Pago")
+  }
     }
   
       return(

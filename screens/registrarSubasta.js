@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {View,Image,StyleSheet,Dimensions,Platform,Alert,SafeAreaView} from "react-native"
+import {View,Image,StyleSheet,Dimensions,Platform,Alert,SafeAreaView,ScrollView} from "react-native"
 import { Block, Checkbox, Text, theme,Input,Button } from "galio-framework";
 import { Icon,Header } from 'react-native-elements'
 import * as ImagePicker from 'expo-image-picker';
 import { AuthContext } from "../middleware/context";
+
 
 
 const { width, height } = Dimensions.get("screen");
@@ -129,7 +130,7 @@ export default function registrarSubasta(props){
         })
     }
         return(
-            <SafeAreaView >
+            <ScrollView >
             <Block style={styles.block}>
                 <Input
                 style={{borderColor:theme.COLORS.INFO}}
@@ -149,17 +150,17 @@ export default function registrarSubasta(props){
                 />
             </Block>
 
+            <Block>
             <Text h4 bold style={{marginHorizontal:20}}>Agregar Imagenes</Text>
             <Text p style={{marginHorizontal:20, color:"grey"}}>Solo se puede añadir de a una (1)</Text>
-            <View style={{ flex: 1, justifyContent: 'center', marginHorizontal:20,marginTop:90 }}>
+            <View style={{ flex: 1, justifyContent: 'center', marginHorizontal:20,marginTop:20 }}>
                 <Button onlyIcon icon="plus" iconFamily="entypo" iconSize={20} color='primary' onPress={pickImage}>Pick an image from camera roll</Button>
                 {image &&<Image source={{ uri: image }} style={{ width: 120, height: 120 }} />}
             </View>
-            <View style={{height:140}}/>
             <Button style={styles.button} onPress={cloudinaryUpload}>Agregar Imagen</Button>
-            <View style={{height:10}}/>
             <Button color="info" style={styles.button2} onPress={cargarSubasta}>REGISTRAR ARTICULO</Button>
-            </SafeAreaView>
+            </Block>
+            </ScrollView>
 
         )
     }
@@ -170,11 +171,12 @@ const styles=StyleSheet.create({
         marginTop:20,
     },
     button:{
-        marginTop:20,
+        marginTop:10,
         marginHorizontal:20,
     },
     button2:{
         marginTop:20,
+        marginBottom:100,
         marginHorizontal:20,
         width:200,
 

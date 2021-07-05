@@ -40,6 +40,7 @@ export default function App() {
   const [session, SetSession] = React.useState(false)
   const [id,setID]=React.useState('')
   const [userId,setUserID]=React.useState('')
+  const [item,setItem] = React.useState('')
 
  const authContext = React.useMemo(()=>({
       signIn: ()=>{
@@ -62,6 +63,12 @@ export default function App() {
       },
       checkUser:()=>{
         return userId;
+      },
+      setItem:(value)=>{
+        setItem(value)
+      },
+      checkItem:()=>{
+        return item;
       }
  }))
   return (
@@ -111,7 +118,6 @@ function drawer() {
       <Drawer.Screen name="Perfil" component={PerfilStack} />
       <Drawer.Screen name="Mis Subastas" component={MisStack} />
       <Drawer.Screen name="Subastar Artículo" component={registrarSubasta} />
-      <Drawer.Screen name="Ver Historial" component={Historial} />
       <Drawer.Screen name="Registrar Medios de Pago" component={PagosStack} />
       <Drawer.Screen name="Cerrar Sesión / Salir" component={Cerrar} />
   </Drawer.Navigator>

@@ -1,5 +1,5 @@
 import React,{useEffect} from "react"
-import {View,StyleSheet,ImageBackground,Dimensions,FlatList,TouchableOpacity,Alert} from "react-native"
+import {View,StyleSheet,ImageBackground,Dimensions,FlatList,TouchableOpacity,Alert,ScrollView} from "react-native"
 import {Block,theme,Text} from "galio-framework"
 import {Icon} from "react-native-elements"
 const { width, height } = Dimensions.get("screen");
@@ -53,8 +53,10 @@ export default function EliminarMedio(){
     } 
         return(
             <ImageBackground source={fondo} style={styles.image}>
+             
             <Block safe flex middle>
                 <Block style={styles.registerContainer}>
+                
                 <FlatList
                 ItemSeparatorComponent={
                   Platform.OS !== 'android' &&
@@ -70,6 +72,7 @@ export default function EliminarMedio(){
                 data={medios}
                 renderItem={({ item, index, separators }) => (
                     <Block style={styles.block}>
+                      <ScrollView>
                         <Text p center bold>{item.type}</Text>
                         <Text p center>{item.name}</Text>
                         <Text p center>Nro:{item.data.ultimos_6}</Text>
@@ -77,6 +80,7 @@ export default function EliminarMedio(){
                         <TouchableOpacity onPress={()=>Eliminar(item.id)}>
                             <Icon name='delete' color="#e31212" style={styles.inputIcons} />
                         </TouchableOpacity>
+                        </ScrollView>
                     </Block>
                 )}
               />
@@ -112,7 +116,9 @@ const styles=StyleSheet.create({
         shadowRadius: 8,
         shadowOpacity: 0.1,
         elevation: 1,
-        overflow: "hidden"
+        overflow: "hidden",
+        marginBottom:90,
+        marginTop:90,
       },
       image: {
         flex: 1,

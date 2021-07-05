@@ -1,28 +1,76 @@
-import React from "react"
-import {View,Dimensions,StyleSheet,ImageBackground} from "react-native"
+import React,{useEffect, useState} from "react"
+import {View,Dimensions,StyleSheet,ImageBackground,FlatList} from "react-native"
 import {Block,Text,theme} from "galio-framework"
 import fondo from "../assets/wallApp.png";
+import { AuthContext } from "../middleware/context";
 const { width, height } = Dimensions.get("screen");
 
 
 export default function HistoriaS (){
+  const { checkItem } = React.useContext(AuthContext);
+  const [bids,setBids]=useState([])
+  const [article,setArticle] = useState([])
+  const item=checkItem()
+  //console.log(bids)
+
+  useEffect(()=>{
+    fetch('https://subastas-spring-backend.herokuapp.com/items/'+item+'/bids', {
+        method:"GET",
+        mode: 'cors',
+        crossDomain:true,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        })
+        .then(response =>response.json())
+        .then(response => {if(response!=null){
+        setBids(bids.concat(response))
+        
+        }})
+        .catch(error=>{if(error){
+        console.log(error)
+        Alert.alert("ERROR")
+        }
+      })
+    fetch('https://subastas-spring-backend.herokuapp.com/items/'+item, {
+        method:"GET",
+        mode: 'cors',
+        crossDomain:true,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        })
+        .then(response =>response.json())
+        .then(response => {if(response!=null){
+        setArticle(response)
+        
+        }})
+        .catch(error=>{if(error){
+        console.log(error)
+        Alert.alert("ERROR")
+        }
+    })
+    },[]);
+
         return(
             <ImageBackground source={fondo} style={styles.image}>
             <Block safe flex middle>
                 <Block style={styles.registerContainer}>
-                <Text p style={{marginHorizontal:5}}>Articulo 3 - Subasta 1</Text>
+                <Text p style={{marginHorizontal:5,marginTop:10}}>ID de Articulo:{item}</Text>
                 <View style={{height:60}}/>
-                <Text h3 style={styles.text}>Valor Actual</Text>
-                <Text h2 style={styles.text}>$4500</Text>
+                <Text h3  bold style={styles.text}>Historial De Pujas</Text>
+                <Text h4 style={styles.text2}>{article.title}</Text>
                 <View style={styles.sep}/>
                 <View style={{height:40}}/>
                 <Block style={styles.block}>
-                    <Text center p>VALOR BASE: $4000</Text>
+                    <Text center p>VALOR BASE: ${article.basePrice}</Text>
                     <View style={{height:10}}/>
-                    <Text center p>ID 01:$4040</Text>
-                    <Text center p>ID 02:$4200</Text>
-                    <Text center p>ID 03:$4300</Text>
-                    <Text center p>ID 04:$4500</Text>
+                    {bids.map(object=>{
+                      return(<Text key={object.id} center p>{object.bidderUsername}:${object.bid}</Text>)
+                    })}
+                    
                 </Block>
             </Block>
             </Block>
@@ -42,7 +90,11 @@ const styles=StyleSheet.create({
     },
     text:{
         textAlign:"center",
+        marginBottom:10,
     },
+    text2:{
+      textAlign:"center",
+  },
     image: {
         flex: 1,
         resizeMode: 'cover',

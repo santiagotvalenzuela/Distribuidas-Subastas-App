@@ -8,7 +8,6 @@ import {
   RefreshControl
 } from "react-native";
 import { Block,Card, Checkbox, Text, theme,Input,Button,DeckSwiper} from "galio-framework";
-import AppLoading from 'expo-app-loading';
 const { width } = Dimensions.get('screen');
 import Reloj from '../components/reloj'
 import { AuthContext } from "../middleware/context";
@@ -20,6 +19,7 @@ const wait = (timeout) => {
 
 export default function Subasta (props){
   const { checkId } = React.useContext(AuthContext);
+  const { setItem } = React.useContext(AuthContext);
   const [subastas,setSubs]=React.useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   
@@ -71,7 +71,10 @@ export default function Subasta (props){
     wait(1000).then(() => setRefreshing(false));
   }, []);
   
-
+  function nav(key){
+    setItem(key)
+    props.navigation.navigate("Historial")
+  }
 
         return(
             <Block flex center backgroundColor="#fff"> 
@@ -95,7 +98,7 @@ export default function Subasta (props){
               <View style={styles.sep}/>
               <View style={{height:20}}/>
               <Text  center bold style={{fontSize:20}}>TIEMPO RESTANTE</Text>
-              <Reloj valor={object.active_until}/>
+              <Reloj valor={object.active_until} id={object.id}/>
               <View style={{height:20}}/>
               <Block style={styles.block}>
                   <Text center bold>DESCRIPCIÓN</Text>
@@ -107,7 +110,7 @@ export default function Subasta (props){
                   <Button color="#8e38ff" style={styles.createButton} onPress={()=>props.navigation.navigate("PUJA")}>
                     <Text color="#fff">PUJAR</Text>
                 </Button>
-                <Button color="#8e38ff" style={styles.createButton} onPress={()=>props.navigation.navigate("Historial")}>
+                <Button color="#8e38ff" style={styles.createButton} onPress={()=>nav(object.id)}>
                     <Text color="#fff">HISTORIAL</Text>
                 </Button>
                 <View style={{height:90}}/>

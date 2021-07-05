@@ -6,7 +6,8 @@ import {
   StatusBar,
   View,
   KeyboardAvoidingView,
-  Alert
+  Alert,
+  ScrollView
 } from "react-native";
 import { Block, Checkbox, Text, theme,Input,Button } from "galio-framework";
 import fondo from "../assets/wallApp.png";
@@ -94,7 +95,8 @@ const modify=()=>{
            leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
            centerComponent={{ text: 'PERFIL', style: { color: '#fff' } }}
        />
-        <Block safe flex middle>
+       <ScrollView>
+        <Block safe flex middle >
           <Block style={styles.registerContainer}>
             <Block flex>
               <Block flex={0.17} middle>
@@ -189,7 +191,7 @@ const modify=()=>{
                       }
                     />
                   </Block>
-                  <Block middle>
+                  <Block middle style={{marginBottom:50}}>
                     <Button color="primary" style={styles.createButton} onPress={modify}>
                       <Text bold size={14} color= '#FFFFFF'>
                         ACEPTAR CAMBIOS
@@ -201,6 +203,7 @@ const modify=()=>{
             </Block>
           </Block>
         </Block> 
+        </ScrollView>
     </Block>
     </ImageBackground>
        );
@@ -210,7 +213,7 @@ const modify=()=>{
 const styles = StyleSheet.create({
   registerContainer: {
     width: width * 0.9,
-    height: height * 0.875,
+    height: height * 1,
     backgroundColor: "#F4F5F7",
     borderRadius: 4,
     shadowColor: '#000000',
@@ -221,7 +224,8 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     shadowOpacity: 0.1,
     elevation: 1,
-    overflow: "hidden"
+    overflow: "hidden",
+    marginBottom:35,
   },
   socialConnect: {
     backgroundColor: "#FFFFFF",
