@@ -4,14 +4,18 @@ import { Icon,Header } from 'react-native-elements'
 import Label from "../assets/Label-256.png"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from "../middleware/context";
+import { useState } from 'react';
 
 export default function Home (props){
   const { setId } = React.useContext(AuthContext);
   const [subastas,setSubs]=React.useState([]);
   const [isLoading,setIsLoading] = React.useState(true)
+  //let fecha = subastas.map(object=>(object.startTime))
+  //console.log(fecha)
+
 
   useEffect(()=>{
-    fetch('https://subastas-spring-backend.herokuapp.com/auctions', {
+    fetch('https://subastas-spring-backend.herokuapp.com/auctions?status=active,pending', {
         method:"GET",
         mode: 'cors',
         crossDomain:true,
@@ -70,20 +74,32 @@ export default function Home (props){
                   ))
                 }
                 data={subastas}
-                renderItem={({ item, index, separators }) => (
+                renderItem={({ item, index, separators }) => {
+                  let fecha=new Date(item.startTime+"Z")
+                  let date=fecha.toLocaleDateString()
+                  let tiempo=fecha.toLocaleTimeString()
+                
+                  return(
                   <TouchableHighlight
-                    key={index.toString()}
+                    key={item.id}
                     onPress={() =>nav(item.id)}
                     onShowUnderlay={separators.highlight}
                     onHideUnderlay={separators.unhighlight}>
                     <View style={styles.item}>
-                    <Image source={require("../assets/Label-256.png")}  style={{height:50, width:50}}/>
+                      {item.category==="ORO"?
+                      <Image source={require("../assets/Gold-Medal-High-Quality-PNG.png")}  style={{height:50, width:50}}/>:
+                      item.category==="PLATA"?
+                      <Image source={require("../assets/Silver-Medal-PNG-File.png")}  style={{height:60, width:50}}/>:
+                      item.category==="COMUN"?
+                      <Image source={require("../assets/favpng_bronze-medal-gold-medal.png")}  style={{height:60, width:50}}/>:null
+                      }
                       <Text style={styles.title}>{item.title}</Text>
                       <Text style={styles.title}>  | </Text>
                       <Text style={styles.desc}>{item.category}</Text>
+                      <Text  style={{position:"absolute",top:70,left:70}}>Fecha de Inicio: {date+" "+tiempo}</Text>
                     </View>
                   </TouchableHighlight>
-                )}
+                )}}
               />
             </SafeAreaView>
   )

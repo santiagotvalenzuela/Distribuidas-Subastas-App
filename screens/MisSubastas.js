@@ -1,6 +1,7 @@
 import React,{useEffect,ComponentDidUpdate} from 'react';
 import { ScrollView } from 'react-native';
-import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar,TouchableHighlight, Image,RefreshControl } from 'react-native';
+import { SafeAreaView, View, FlatList, StyleSheet, StatusBar,TouchableHighlight, Image,RefreshControl } from 'react-native';
+import { Text,Block } from 'galio-framework';
 import { Icon,Header } from 'react-native-elements'
 import { AuthContext } from "../middleware/context";
 import Constants from 'expo-constants';
@@ -11,6 +12,7 @@ const wait = (timeout) => {
 export default function misSubastas(props){
   const { setId } = React.useContext(AuthContext);
   const [subastas,setSubs]=React.useState([]);
+  const [activas,setActive] = React.useState([]);
   const {checkUser} = React.useContext(AuthContext)
   const [refreshing, setRefreshing] = React.useState(false);
   const { checkSession } = React.useContext(AuthContext);
@@ -19,7 +21,7 @@ export default function misSubastas(props){
   useEffect(()=>{
     let id = checkUser()
     console.log(id)
-    fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/auctions', {
+    fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/auctions?status=pending', {
         method:"GET",
         mode: 'cors',
         crossDomain:true,
@@ -38,13 +40,32 @@ export default function misSubastas(props){
         Alert.alert("ERROR")
         }
     })
+    fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/auctions?status=active', {
+        method:"GET",
+        mode: 'cors',
+        crossDomain:true,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        })
+        .then(response =>response.json())
+        .then(response => {if(response!=null){
+        //console.log(response)
+        setActive(activas.concat(response))
+        }})
+        .catch(error=>{if(error){
+        console.log(error)
+        Alert.alert("ERROR")
+        }
+    })
   },[]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
       let id = checkUser()
       console.log(id)
-      fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/auctions', {
+      fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/auctions?status=pending', {
           method:"GET",
           mode: 'cors',
           crossDomain:true,
@@ -58,6 +79,25 @@ export default function misSubastas(props){
           //console.log(response)
           setSubs(subastas.concat(response))
           }})
+      fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/auctions?status=active', {
+        method:"GET",
+        mode: 'cors',
+        crossDomain:true,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        })
+        .then(response =>response.json())
+        .then(response => {if(response!=null){
+        //console.log(response)
+        setActive(activas.concat(response))
+        }})
+        .catch(error=>{if(error){
+        console.log(error)
+        Alert.alert("ERROR")
+        }
+    })
     wait(1000).then(() => setRefreshing(false));
   }, []);
 
@@ -88,6 +128,47 @@ export default function misSubastas(props){
                 leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
                 centerComponent={{ text: 'MIS SUBASTAS', style: { color: '#fff',fontWeight:"bold" } }}
             />
+             <Block style={{backgroundColor:"#E1DEE1",marginLeft:5}} >
+              <Text p bold>Subastas Activas</Text>
+            </Block>
+            <FlatList
+                ItemSeparatorComponent={
+                  Platform.OS !== 'android' &&
+                  (({ highlighted }) => (
+                    <View
+                      style={[
+                        styles.separator,
+                        highlighted && { marginLeft: 0 }
+                      ]}
+                    />
+                  ))
+                }
+                data={activas}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+                renderItem={({ item, index, separators }) => (
+                  <TouchableHighlight
+                    key={item.id}
+                    onPress={() =>nav(item.id)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <View style={styles.item}>
+                    {item.category==="ORO"?
+                      <Image source={require("../assets/Gold-Medal-High-Quality-PNG.png")}  style={{height:50, width:50}}/>:
+                      item.category==="PLATA"?
+                      <Image source={require("../assets/Silver-Medal-PNG-File.png")}  style={{height:60, width:50}}/>:
+                      item.category==="COMUN"?
+                      <Image source={require("../assets/favpng_bronze-medal-gold-medal.png")}  style={{height:60, width:50}}/>:null
+                      }
+                      <Text style={styles.title}>{item.title}</Text>
+                      <Text style={styles.title}>  | </Text>
+                      <Text style={styles.desc}>{item.category}</Text>
+                    </View>
+                  </TouchableHighlight>
+                )}
+              />
+            <Block style={{backgroundColor:"#E1DEE1",marginLeft:5}}>
+              <Text p bold>Subastas Pendientes</Text>
+            </Block>
             <FlatList
                 ItemSeparatorComponent={
                   Platform.OS !== 'android' &&
@@ -101,20 +182,20 @@ export default function misSubastas(props){
                   ))
                 }
                 data={subastas}
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                
                 renderItem={({ item, index, separators }) => (
-                  <TouchableHighlight
-                    key={item.id}
-                    onPress={() =>nav(item.id)}
-                    onShowUnderlay={separators.highlight}
-                    onHideUnderlay={separators.unhighlight}>
                     <View style={styles.item}>
-                    <Image source={require("../assets/Label-256.png")}  style={{height:50, width:50}}/>
+                    {item.category==="ORO"?
+                      <Image source={require("../assets/Gold-Medal-High-Quality-PNG.png")}  style={{height:50, width:50}}/>:
+                      item.category==="PLATA"?
+                      <Image source={require("../assets/Silver-Medal-PNG-File.png")}  style={{height:60, width:50}}/>:
+                      item.category==="COMUN"?
+                      <Image source={require("../assets/favpng_bronze-medal-gold-medal.png")}  style={{height:60, width:50}}/>:null
+                      }
                       <Text style={styles.title}>{item.title}</Text>
                       <Text style={styles.title}>  | </Text>
                       <Text style={styles.desc}>{item.category}</Text>
                     </View>
-                  </TouchableHighlight>
                 )}
               />
             </SafeAreaView>

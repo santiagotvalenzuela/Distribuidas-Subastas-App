@@ -118,6 +118,7 @@ function drawer() {
       <Drawer.Screen name="Perfil" component={PerfilStack} />
       <Drawer.Screen name="Mis Subastas" component={MisStack} />
       <Drawer.Screen name="Subastar Artículo" component={registrarSubasta} />
+      <Drawer.Screen name="Historial" component={Historial} />
       <Drawer.Screen name="Registrar Medios de Pago" component={PagosStack} />
       <Drawer.Screen name="Cerrar Sesión / Salir" component={Cerrar} />
   </Drawer.Navigator>

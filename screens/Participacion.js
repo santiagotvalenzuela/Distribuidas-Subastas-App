@@ -4,23 +4,21 @@ import {Button,Text,Block,theme } from "galio-framework";
 import { Icon,Header } from 'react-native-elements'
 
 const { width, height } = Dimensions.get("screen");
-export default class  Medios extends React.Component{
-    render(){
+export default function  Medios (props){
     return(
         <View>
-            <Button color="primary" style={styles.createButton} onPress={()=>this.props.navigation.navigate("SubastaScreen")}>
+            <Button color="primary" style={styles.createButton} onPress={()=>props.navigation.navigate("SubastaScreen")}>
                 <Text bold size={14} color= '#FFFFFF'>
                     PARTICIPAR
                 </Text>
             </Button>
-            <Button color="primary" style={styles.createButton2} onPress={()=>this.props.navigation.navigate("verArticulos")}>
+            <Button color="primary" style={styles.createButton2} onPress={()=>props.navigation.navigate("verArticulos")}>
                 <Text bold size={14} color= '#FFFFFF'>
                     VER ARTÍCULOS
                 </Text>
             </Button>
         </View>
     );
-    }
 }
 
 const styles = StyleSheet.create({

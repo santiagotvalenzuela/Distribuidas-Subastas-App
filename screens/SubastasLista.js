@@ -7,7 +7,6 @@ import { AuthContext } from "../middleware/context";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width } = Dimensions.get('screen');
-import axios from 'axios'
 
 function SubastasLista (props) {
   const { checkSession } = React.useContext(AuthContext);
@@ -15,7 +14,8 @@ function SubastasLista (props) {
   const { checkId } = React.useContext(AuthContext);
   const valor=checkSession()
   const [subastas,setSubs]=React.useState([]);
-  
+  console.log(subastas)
+  const {checkUser} = React.useContext(AuthContext)
   
   useEffect(()=>{
     let id=checkId()
@@ -61,11 +61,16 @@ function SubastasLista (props) {
       },
       credentials: 'same-origin',
       })
-      .then(response =>console.log(response.status))
-      .then(Alert.alert("Participación Solicitada!"))
+      //.then(response =>console.log(response.status))
+      .then(res => {if(res.status!="409"){
+        Alert.alert("¡Participación Solicitada!")
+      }
+    else{
+      Alert.alert("Su Categoría de Usuario No Es Compatible con esta Subasta")
+    }})
       .catch(error=>{if(error){
         console.log(error)
-        Alert.alert("Error")
+        Alert.alert("ERROR")
       }
     })
   }
@@ -87,6 +92,7 @@ function SubastasLista (props) {
               </Button>:null}
         <View style={styles.sep}/>
         <Block flex>
+          
         <FlatList
                 ItemSeparatorComponent={
                   Platform.OS !== 'android' &&

@@ -19,6 +19,8 @@ export default function RegistroV (props) {
   const [mail, setText2] = useState('');
 
   const registrar=async()=>{
+    console.log(code)
+    console.log(mail)
     console.log(code,mail)
     fetch('https://subastas-spring-backend.herokuapp.com/validate', {
      method:"POST",

@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
   Alert
 } from "react-native";
-import { Block, Checkbox, Text, theme,Input,Button,ScrollView } from "galio-framework";
+import { Block, Checkbox, Text, theme,Input,Button,Radio,ScrollView } from "galio-framework";
 import fondo from "../assets/wallApp.png";
 import { Icon,Header } from 'react-native-elements'
 import { AuthContext } from "../middleware/context";
@@ -16,8 +16,10 @@ const { width, height } = Dimensions.get("screen");
 
 export default function CBU (){
   const { checkUser } = React.useContext(AuthContext);
-  const [nro,setNro] = React.useState('');
+  const [alias,setAlias] = React.useState('');
   const [name,setName] = React.useState('');
+  const [moneda,setMoneda] = React.useState('');
+  console.log(moneda)
 
 
   const CargarDatos=()=>{
@@ -32,8 +34,9 @@ export default function CBU (){
       body:JSON.stringify({
         "name":name,
         "type":"CBU",
+        "currency":moneda,
         "data":{
-          "ultimos_6":nro,
+          "alias":alias,
         }
       }),
       credentials: 'same-origin',
@@ -62,7 +65,7 @@ export default function CBU (){
                 </Block>
                 <Block flex center>
                   <KeyboardAvoidingView
-                    style={{ padding:70 }}
+                    style={{ padding:50 }}
                     behavior="padding"
                     enabled
                   >
@@ -71,8 +74,8 @@ export default function CBU (){
                         borderless
                         placeholder="Alias"
                         placeholderTextColor="grey"
-                        onChangeText={name=>setName(name)}
-                        defaultValue={name}
+                        onChangeText={alias=>setAlias(alias)}
+                        defaultValue={alias}
                         iconContent={
                             <Icon
                                 name='edit'
@@ -84,11 +87,10 @@ export default function CBU (){
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
                         borderless
-                        placeholder="Nro de CBU"
-                        type="number-pad"
+                        placeholder="Nombre"
                         placeholderTextColor="grey"
-                        onChangeText={nro=>setNro(nro)}
-                        defaultValue={nro}
+                        onChangeText={name=>setName(name)}
+                        defaultValue={name}
                         iconContent={
                             <Icon
                                 name='edit'
@@ -96,6 +98,11 @@ export default function CBU (){
                             />
                         }
                       />
+                    </Block>
+                    <Text center p bold style={{marginTop:7,marginBottom:5}}>Moneda Del Medio de Pago: </Text>
+                    <Block style={{flexDirection:"row",marginHorizontal:10,marginTop:10}}>
+                      <Radio  containerStyle={{paddingHorizontal:10,marginHorizontal:25}} label="Dólares" color="info" onChange={()=>setMoneda("DOLAR")}  />
+                      <Radio  label="Pesos" color="info"  onChange={()=>setMoneda("PESO")}/>
                     </Block>
                     <Block middle>
                       <Button color="primary" style={styles.createButton} onPress={CargarDatos}>

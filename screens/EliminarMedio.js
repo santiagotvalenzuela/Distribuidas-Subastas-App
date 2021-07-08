@@ -75,7 +75,7 @@ export default function EliminarMedio(){
                       <ScrollView>
                         <Text p center bold>{item.type}</Text>
                         <Text p center>{item.name}</Text>
-                        <Text p center>Nro:{item.data.ultimos_6}</Text>
+                        <Text p center>Data:{item.data.primeros_4 || item.data.alias}</Text>
                         <View style={{height:5}}/>
                         <TouchableOpacity onPress={()=>Eliminar(item.id)}>
                             <Icon name='delete' color="#e31212" style={styles.inputIcons} />

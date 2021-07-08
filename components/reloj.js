@@ -9,10 +9,11 @@ export default function Reloj (props){
     let diff = new Date(date.getTime()-val.getTime());// probar con la variable date
     console.log(diff)
     const [winner,setWinner] = React.useState([])
-    //console.log(winner[0])
+    console.log(winner[0])
 
     useEffect(()=>{
-        fetch('https://subastas-spring-backend.herokuapp.com/items/'+props.id+'/bids', {
+        const interval=setInterval(()=>{
+            fetch('https://subastas-spring-backend.herokuapp.com/items/'+props.id+'/bids', {
             method:"GET",
             mode: 'cors',
             crossDomain:true,
@@ -30,6 +31,9 @@ export default function Reloj (props){
             Alert.alert("ERROR")
             }
           })
+        },100000);
+        return()=>clearInterval(interval);
+        
     },[]);
            
         return (

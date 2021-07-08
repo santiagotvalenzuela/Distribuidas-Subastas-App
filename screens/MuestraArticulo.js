@@ -16,7 +16,8 @@ export default function Subasta (){
   const [subastas,setSubs] = React.useState([]);
   const [images,setImages] = React.useState([])
   const { checkId } = React.useContext(AuthContext);
-  
+  const { checkSession } = React.useContext(AuthContext);
+  const valor=checkSession()
 
   useEffect(()=>{
     let id = checkId();
@@ -62,7 +63,8 @@ export default function Subasta (){
             <Carrusel/>
             <View style={{height:20}}/>
             <View style={{height:20}}/>
-            <Text  center style={{fontSize:20}}>VALOR BASE: ${subastas.basePrice}</Text>
+            {valor===true?
+            <Text  center  size={20} color="#000" >PRECIO BASE: ${subastas.basePrice}</Text>:null}
             <View style={styles.sep}/>
             <View style={{height:20}}/>
             <Block style={styles.block}>

@@ -21,6 +21,7 @@ export default function Subasta (){
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [puja, setPuja] = useState(null);
+  //const [moneda, setMoneda] = useState(null);
 
 
 
@@ -46,7 +47,7 @@ export default function Subasta (){
         }
     })
     let id2= checkUser();
-        fetch('https://subastas-spring-backend.herokuapp.com/users/'+id2+'/payments',{
+        fetch('https://subastas-spring-backend.herokuapp.com/users/'+id2+'/payments?status=approved',{
           method:"GET",
           mode: 'cors',
           crossDomain:true,
@@ -90,7 +91,7 @@ export default function Subasta (){
           Alert.alert("Puja Realizada")
         }
         else{
-          Alert.alert("Monto Insuficiente o Demasiado Alto")
+          Alert.alert("Error","Monto Insuficiente, Demasiado Alto o Moneda No Compatible con la Subasta")
         }})
         .catch(error=>{if(error){
         console.log(error)

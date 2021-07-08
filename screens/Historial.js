@@ -1,43 +1,91 @@
-import React from "react";
-import {View,SafeAreaView,TouchableOpacity,ScrollView,Image,FlatList,StyleSheet,Dimensions} from "react-native"
+import React,{useEffect,useState} from "react";
+import {View,SafeAreaView,TouchableOpacity,ScrollView,Image,FlatList,StyleSheet,Dimensions,RefreshControl} from "react-native"
 import { Icon,Header } from 'react-native-elements'
 import {Block,Text,theme} from "galio-framework"
 const { width, height } = Dimensions.get("screen");
 import { AuthContext } from "../middleware/context";
 
-const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item | Plata | ',
-      desc: "28/10/21",
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Subasta 2 | Oro | ',
-      desc: "28/10/21",
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item | Plata | ',
-      desc: "28/10/21",
-    },
-  ];
-
-  const Item = ({ title, desc }) => (
-    <ScrollView>
-      <View style={styles.item}>
-        <Image source={require("../assets/Label-256.png")}  style={{height:50, width:50}}/>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.desc}>{desc}</Text>
-      </View>
-      <View style={styles.sep}/>
-    </ScrollView>
-  );
-
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 export default function Historial (props){
-      const renderItem = ({ item }) => <Item title={item.title} desc={item.desc}/>;
-      const { checkSession } = React.useContext(AuthContext);
-      const valor=checkSession()
+  const {checkUser} = React.useContext(AuthContext)
+  const [subastas,setSubs]=useState([])
+  const [data,setData] = useState([])
+  const { checkSession } = React.useContext(AuthContext);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const valor=checkSession()
+  console.log(data)
+
+  useEffect(()=>{
+    let id = checkUser()
+    console.log(id)
+    fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/auctions?status=finished', {
+        method:"GET",
+        mode: 'cors',
+        crossDomain:true,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        })
+        .then(response =>response.json())
+        .then(response => {if(response!=null){
+        //console.log(response)
+        setSubs(subastas.concat(response))
+        }})
+      fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/analytics', {
+        method:"GET",
+        mode: 'cors',
+        crossDomain:true,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin',
+        })
+        .then(response =>response.json())
+        .then(response => {if(response!=null){
+        //console.log(response)
+        setData(response)
+        }})   
+      },[])
+      
+      const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        let id = checkUser()
+        console.log(id)
+        fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/auctions?status=finished', {
+            method:"GET",
+            mode: 'cors',
+            crossDomain:true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin',
+            })
+            .then(response =>response.json())
+            .then(response => {if(response!=null){
+            //console.log(response)
+            setSubs(subastas.concat(response))
+            }})
+          fetch('https://subastas-spring-backend.herokuapp.com/users/'+id+'/analytics', {
+            method:"GET",
+            mode: 'cors',
+            crossDomain:true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin',
+            })
+            .then(response =>response.json())
+            .then(response => {if(response!=null){
+            //console.log(response)
+            setData(response)
+            }})
+        wait(1000).then(() => setRefreshing(false));
+      }, []);
+
+
       if(valor===false){
         return(
           <View >
@@ -52,7 +100,7 @@ export default function Historial (props){
       }
       else{
         return(
-        <SafeAreaView>
+        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
             <Header
                 backgroundColor="#7063ff"
                 leftComponent={<Icon name="menu" type="menu" color="#fff" onPress={()=>props.navigation.toggleDrawer()}/>}
@@ -62,18 +110,58 @@ export default function Historial (props){
         <Block style={styles.block}>
             <Text center bold>ARTICULOS GANADOS:</Text>
             <View style={{height:10}}/>
-            <Text center style={styles.text}>2</Text>
+            <Text center style={styles.text}>{data.items_won}</Text>
         </Block>
         <View style={{height:20}}/>
         <Block style={styles.block}>
-            <Text center bold >ARTICULOS OFERTADOS:</Text>
+            <Text center bold >PARTICIPACIONES EN SUBASTAS:</Text>
             <View style={{height:10}}/>
-            <Text center style={styles.text}>5</Text>
+            <Text center style={styles.text}>{data.auctions_participated}</Text>
+        </Block>
+        <View style={{height:20}}/>
+        <Block style={styles.block}>
+            <Text center bold >PARTICIPACIONES EN ARTICULOS:</Text>
+            <View style={{height:10}}/>
+            <Text center style={styles.text}>{data.items_participated}</Text>
+        </Block>
+        <View style={{height:20}}/>
+        <Block style={styles.block}>
+            <Text center bold >TOTAL DE PUJAS:</Text>
+            <View style={{height:10}}/>
+            <Text center style={styles.text}>{data.total_bids}</Text>
         </Block>
         <View style={{height:30}}/>
         <Text center bold>HISTORIAL DE PARTICIPACIONES:</Text>
-        <FlatList data={DATA} renderItem={renderItem} keyExtractor={item => item.id} />
-        </SafeAreaView>
+        <FlatList
+                ItemSeparatorComponent={
+                  Platform.OS !== 'android' &&
+                  (({ highlighted }) => (
+                    <View
+                      style={[
+                        styles.separator,
+                        highlighted && { marginLeft: 0 }
+                      ]}
+                    />
+                  ))
+                }
+                data={subastas}
+                
+                renderItem={({ item, index, separators }) => (
+                    <View style={styles.item}>
+                    {item.category==="ORO"?
+                      <Image source={require("../assets/Gold-Medal-High-Quality-PNG.png")}  style={{height:50, width:50}}/>:
+                      item.category==="PLATA"?
+                      <Image source={require("../assets/Silver-Medal-PNG-File.png")}  style={{height:60, width:50}}/>:
+                      item.category==="COMUN"?
+                      <Image source={require("../assets/favpng_bronze-medal-gold-medal.png")}  style={{height:60, width:50}}/>:null
+                      }
+                      <Text style={styles.title}>{item.title}</Text>
+                      <Text style={styles.title}>  | </Text>
+                      <Text style={styles.desc}>{item.category}</Text>
+                    </View>
+                )}
+              />
+        </ScrollView>
         );
     }
   }

@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView,
   Alert,
 } from "react-native";
-import { Block, Checkbox, Text, theme,Input,Button,ScrollView } from "galio-framework";
+import { Block, Checkbox, Text, theme,Input,Button,ScrollView,Radio } from "galio-framework";
 import fondo from "../assets/wallApp.png";
 import { Icon,Header } from 'react-native-elements'
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -24,6 +24,7 @@ export default function Tarjeta () {
   const [fecha,setFecha] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(null);
+  const [moneda,setMoneda] = React.useState('');
   const [items, setItems] = React.useState([
     {label: 'Visa', value: 'Visa'},
     {label: 'MasterCard', value: 'MasterCard'},
@@ -43,9 +44,10 @@ export default function Tarjeta () {
       body:JSON.stringify({
         "name":value,
         "type":"CREDIT_CARD",
+        "currency":moneda,
         "data":{
-          "primeros_4":cod,
-          "ultimos_6":nro,
+          "primeros_4":nro,
+          "ultimos_6":cod,
           "fecha_vencimiento":fecha,
         }
       }),
@@ -139,6 +141,11 @@ export default function Tarjeta () {
                             />
                         }
                       />
+                    </Block>
+                    <Text center p bold style={{marginTop:7,marginBottom:5}}>Moneda Del Medio de Pago: </Text>
+                    <Block style={{flexDirection:"row",marginHorizontal:10,marginTop:10}}>
+                      <Radio  containerStyle={{paddingHorizontal:10,marginHorizontal:25}} label="Dólares" color="info" onChange={()=>setMoneda("DOLAR")}  />
+                      <Radio  label="Pesos" color="info"  onChange={()=>setMoneda("PESO")}/>
                     </Block>
                     <Block middle>
                       <Button color="primary" style={styles.createButton} onPress={CargarDatos}>

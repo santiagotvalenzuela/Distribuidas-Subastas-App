@@ -117,10 +117,7 @@ export default function Subasta (props){
                 </Block>          
           </SafeAreaView>
             )}})}
-           
-                
             </ScrollView>
- 
             </Block>
         )
             }

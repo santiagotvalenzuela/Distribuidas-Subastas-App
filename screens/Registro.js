@@ -131,12 +131,14 @@ export default function Registro(props) {
                         Privacy Policy
                       </Button>
                     </Block>
+                    <Block row width={width * 0.75}>
+                    <Text style={{color:"blue"}} onPress={()=>props.navigation.navigate("RegistroV")}>Ya Tengo Mi Código!</Text>
+                    </Block>
                     <Block middle>
                       <Button color="primary" style={styles.createButton} onPress={registrar} >
                         <Text bold size={14} color= '#FFFFFF'>
                           CREAR CUENTA
                         </Text>
-
                       </Button>
                     </Block>
                   </KeyboardAvoidingView>
@@ -200,7 +202,8 @@ const styles = StyleSheet.create({
   },
   createButton: {
     width: width * 0.5,
-    marginTop: 25
+    marginTop: 27,
+    marginBottom:20
   },
   image: {
     flex: 1,
